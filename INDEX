@@ -1,0 +1,51 @@
+Main functions
+--------------
+pelora                  Supervised Grouping of Predictor Variables
+wilma                   Supervised Grouping of Predictor Variables
+
+
+Methods for pelora and wilma
+----------------------------
+coef.pelora             Extract the Model Coefficients of Pelora
+fitted.pelora           Extract the Fitted Values of Pelora
+plot.pelora             2-Dimensional Visualization of Pelora's Output
+predict.pelora          Predict Method for Pelora
+print.pelora            Print Method for Pelora Objects
+summary.pelora          Summary Method for Pelora Objects
+fitted.wilma            Extract the Fitted Values of Wilma
+plot.wilma              2-Dimensional Visualization of Wilma's Output
+predict.wilma           Predict Method for Wilma
+print.wilma             Print Method for Wilma Objects
+summary.wilma           Summary Method for Wilma Objects
+
+
+Auxiliary functions
+-------------------
+nnr			Classification with Wilma's Clusters
+dlda                    Classification with Wilma's Clusters
+logreg			Classification with Wilma's Clusters
+aggtrees		Classification with Wilma's Clusters
+margin                  Classification Margin Between Two Sample Classes
+score                   Wilcoxon Score for Binary Problems
+sign.change             Sign-flipping of Predictor Variables for Pelora
+sign.flip               Sign-flipping of Predictor Variables for Wilma
+standardize.genes       Standardization of Predictor Variables
+back.search             Internal function for Wilma
+
+
+Datasets
+--------
+leukemia                A part of the famous AML/ALL-leukemia dataset
+
+
+
+
+
+
+
+
+
+
+
+
+
