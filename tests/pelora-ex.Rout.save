@@ -1,0 +1,1194 @@
+
+R : Copyright 2004, The R Foundation for Statistical Computing
+Version 1.9.1  (2004-06-21), ISBN 3-900051-00-3
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for a HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(supclust)
+Loading required package: class 
+Loading required package: rpart 
+> data(leukemia, package="supclust")
+> 
+> set.seed(724)
+> xN <- matrix(rnorm(750), 3, 250)
+> x  <- leukemia.x
+> dimnames(x) <- list(1:nrow(x), paste("V",1:ncol(x),sep=""))
+> 
+> .proctime00 <- proc.time()
+> 
+> ## 1. Without clinical variables:
+> fit1 <- pelora(leukemia.x, leukemia.y, noc=3, lam=1/32, fl="pm", sta=FALSE)
+.................
+Cluster 1 terminated 
+................
+Cluster 2 terminated 
+...............
+Cluster 3 terminated 
+> 
+> ## 2. With clinical variables:
+> fitW <- pelora(leukemia.x[,101:250],leukemia.y, leukemia.x[,1:100], noc = 3,
++                flip = "pm", standardize = FALSE)
+.
+Cluster 1 terminated 
+.................
+Cluster 2 terminated 
+................
+Cluster 3 terminated 
+> 
+> ## 3. With dimnames 
+> fit3 <- pelora(x, leukemia.y, noc = 3, lambda = 1/32, flip="pm", stand = FALSE)
+.................
+Cluster 1 terminated 
+................
+Cluster 2 terminated 
+...............
+Cluster 3 terminated 
+> 
+> ## 4. Test the tracing
+> fit4 <- pelora(x, leukemia.y, noc = 1, trace = 2, flip = "pm", stand = FALSE)
+Added gene 69, criterion value 12.145982
+Added gene 63, criterion value 10.661163
+Added gene 66, criterion value 10.169178
+Added gene 96, criterion value 9.862817
+Added gene 135, criterion value 9.658002
+Added gene 240, criterion value 9.535328
+Added gene 100, criterion value 9.448704
+Added gene 384, criterion value 9.345542
+Added gene 310, criterion value 9.284777
+Added gene 493, criterion value 9.245503
+Added gene 245, criterion value 9.213091
+Added gene 153, criterion value 9.146760
+Added gene 426, criterion value 9.092045
+Added gene 114, criterion value 9.068290
+Added gene 325, criterion value 9.039320
+Added gene 173, criterion value 9.019431
+
+Cluster 1 terminated 
+> 
+> ## 5. Without tracing
+> fit5 <- pelora(x, leukemia.y, noc = 10, trace = 0, flip = "cor", stand = FALSE)
+> 
+> ## Running time
+> cat('Time elapsed: ', proc.time() - .proctime00,'\n')
+Time elapsed:  21.56 0 21.61 0 0 
+> 
+> ## Checking the output of fit1
+> fit1
+
+Pelora called with lambda = 0.03125, 3 clusters fitted
+
+Cluster 1 : Contains 16 genes, final criterion 9.019
+Cluster 2 : Contains 15 genes, final criterion 6.184
+Cluster 3 : Contains 14 genes, final criterion 4.873
+
+> summary(fit1)
+
+Pelora called with lambda = 0.03125, 3 clusters fitted
+
+Cluster 1 : Contains 16 genes, final criterion 9.019
+Entry  1 : Gene  69          
+Entry  2 : Gene  63          
+Entry  3 : Gene  66          
+Entry  4 : Gene  96          
+Entry  5 : Gene 135          
+Entry  6 : Gene 240          
+Entry  7 : Gene 100          
+Entry  8 : Gene 134 (flipped)
+Entry  9 : Gene  60 (flipped)
+Entry 10 : Gene 243 (flipped)
+Entry 11 : Gene 245          
+Entry 12 : Gene 153          
+Entry 13 : Gene 176 (flipped)
+Entry 14 : Gene 114          
+Entry 15 : Gene  75 (flipped)
+Entry 16 : Gene 173          
+
+Cluster 2 : Contains 15 genes, final criterion 6.184
+Entry  1 : Gene  69          
+Entry  2 : Gene 225          
+Entry  3 : Gene 126 (flipped)
+Entry  4 : Gene 100          
+Entry  5 : Gene 204          
+Entry  6 : Gene  20          
+Entry  7 : Gene 215          
+Entry  8 : Gene 228          
+Entry  9 : Gene 105          
+Entry 10 : Gene 186 (flipped)
+Entry 11 : Gene 173          
+Entry 12 : Gene 218          
+Entry 13 : Gene 222 (flipped)
+Entry 14 : Gene 123          
+Entry 15 : Gene  58          
+
+Cluster 3 : Contains 14 genes, final criterion 4.873
+Entry  1 : Gene  69          
+Entry  2 : Gene  63          
+Entry  3 : Gene 126 (flipped)
+Entry  4 : Gene 195 (flipped)
+Entry  5 : Gene 236 (flipped)
+Entry  6 : Gene  95          
+Entry  7 : Gene  92 (flipped)
+Entry  8 : Gene 243 (flipped)
+Entry  9 : Gene  75          
+Entry 10 : Gene  30 (flipped)
+Entry 11 : Gene  41          
+Entry 12 : Gene  58          
+Entry 13 : Gene  17 (flipped)
+Entry 14 : Gene 198          
+
+
+> coef(fit1)
+  Intercept Predictor 1 Predictor 2 Predictor 3 
+-0.04619694  4.04250968  4.92367256  4.75737556 
+> plot(fit1)
+> fitted(fit1)
+   Predictor 1 Predictor 2 Predictor 3
+1   -0.2285066 -0.12432003 -0.33983410
+2   -0.2017373 -0.04138686 -0.38015308
+3   -0.2615608 -0.04055937 -0.39419765
+4   -0.2780412 -0.09475581 -0.34197622
+5   -0.2723402 -0.09896039 -0.36545322
+6   -0.2570126 -0.10788684 -0.30544423
+7   -0.2582871 -0.06090086 -0.29378052
+8   -0.2432369 -0.01509041 -0.38560155
+9   -0.2800386 -0.05157562 -0.34834236
+10  -0.2349189 -0.05628643 -0.30459387
+11  -0.3159678 -0.10866037 -0.33425831
+12  -0.3399309 -0.01791853 -0.39402569
+13  -0.3098570 -0.06796453 -0.35068307
+14  -0.2911981  0.01395371 -0.36716178
+15  -0.2804411 -0.11240865 -0.35376125
+16  -0.2989401 -0.04680822 -0.34514395
+17  -0.3064803 -0.03457211 -0.29166647
+18  -0.3009477 -0.04104916 -0.36065756
+19  -0.2803658 -0.01647425 -0.34734494
+20  -0.3619075 -0.02772715 -0.36860677
+21  -0.2534279 -0.06582762 -0.32617354
+22  -0.2767475 -0.05673009 -0.33408313
+23  -0.2594244 -0.06804213 -0.33286369
+24  -0.2686963 -0.05743951 -0.37159634
+25  -0.2493578 -0.07558631 -0.33871439
+26  -0.3445316 -0.05378141 -0.37364051
+27  -0.2656955 -0.09953485 -0.35245539
+28   0.1830933  0.33047470  0.02750604
+29   0.2351452  0.33496886  0.08166425
+30   0.1945311  0.39994464  0.07867998
+31   0.2281800  0.35522562  0.04344020
+32   0.2371330  0.36371202  0.10003395
+33   0.2427357  0.31841017  0.07078407
+34   0.2418461  0.35177789  0.05783627
+35   0.1971921  0.33679719  0.04908993
+36   0.2026620  0.34749665  0.08493945
+37   0.2051926  0.31614019  0.12107278
+38   0.2108391  0.32627858  0.07758265
+> 
+> identical(predict(fit1), fitted(fit1))
+[1] TRUE
+> predict(fit1, type = "cla")
+   3 Predictors
+1             0
+2             0
+3             0
+4             0
+5             0
+6             0
+7             0
+8             0
+9             0
+10            0
+11            0
+12            0
+13            0
+14            0
+15            0
+16            0
+17            0
+18            0
+19            0
+20            0
+21            0
+22            0
+23            0
+24            0
+25            0
+26            0
+27            0
+28            1
+29            1
+30            1
+31            1
+32            1
+33            1
+34            1
+35            1
+36            1
+37            1
+38            1
+> predict(fit1, type = "pro")
+   3 Predictors
+1    0.03921216
+2    0.05345247
+3    0.03997880
+4    0.03683994
+5    0.03315062
+6    0.04438366
+7    0.05798673
+8    0.05029546
+9    0.04354692
+10   0.06168399
+11   0.03080765
+12   0.03282706
+13   0.03551075
+14   0.05208485
+15   0.03178925
+16   0.04200263
+17   0.05504766
+18   0.03989938
+19   0.05150768
+20   0.03231636
+21   0.04990098
+22   0.04592947
+23   0.04681982
+24   0.03980893
+25   0.04574790
+26   0.02984844
+27   0.03601593
+28   0.92070506
+29   0.94989184
+30   0.95621551
+31   0.94437543
+32   0.96004067
+33   0.94477642
+34   0.94972460
+35   0.93356412
+36   0.94725577
+37   0.94862470
+38   0.94167893
+> 
+> predict(fit1, newdata = xN)
+  Predictor 1 Predictor 2 Predictor 3
+1   0.1799321 -0.19641747   0.4566692
+2   0.3055774 -0.04751572  -0.0557937
+3  -0.1820159 -0.25441379  -0.0938568
+> predict(fit1, newdata = xN, type = "pro")
+  3 Predictors
+1    0.8683710
+2    0.6659045
+3    0.0771895
+> predict(fit1, newdata = xN, type = "cla")
+  3 Predictors
+1            1
+2            1
+3            0
+> 
+> 
+> ## Checking the output of fit2
+> fitW
+
+Pelora called with lambda = 0.03125,
+2 clusters and 1 clinical variable fitted
+
+Predictor 1 : Clinical variable 69, final criterion 12.146
+Predictor 2 : Cluster with 16 genes, final criterion  6.875
+Predictor 3 : Cluster with 15 genes, final criterion  5.210
+
+> summary(fitW)
+
+Pelora called with lambda = 0.03125,
+2 clusters and 1 clinical variable fitted
+
+Predictor 1 : Clinical variable 69, final criterion 12.146
+
+Predictor 2 : Cluster with 16 genes, final criterion  6.875
+Entry  1 : Gene  74 (flipped)
+Entry  2 : Gene  61          
+Entry  3 : Gene  26          
+Entry  4 : Gene  83 (flipped)
+Entry  5 : Gene  21 (flipped)
+Entry  6 : Gene  76          
+Entry  7 : Gene 128 (flipped)
+Entry  8 : Gene  86          
+Entry  9 : Gene   5 (flipped)
+Entry 10 : Gene 118 (flipped)
+Entry 11 : Gene  19 (flipped)
+Entry 12 : Gene  42 (flipped)
+Entry 13 : Gene  85 (flipped)
+Entry 14 : Gene 143          
+Entry 15 : Gene 145 (flipped)
+Entry 16 : Gene  37 (flipped)
+
+Predictor 3 : Cluster with 15 genes, final criterion  5.210
+Entry  1 : Gene  74          
+Entry  2 : Gene  87 (flipped)
+Entry  3 : Gene  26 (flipped)
+Entry  4 : Gene  83          
+Entry  5 : Gene  91          
+Entry  6 : Gene  41 (flipped)
+Entry  7 : Gene 143 (flipped)
+Entry  8 : Gene  36          
+Entry  9 : Gene  14          
+Entry 10 : Gene  28          
+Entry 11 : Gene  86 (flipped)
+Entry 12 : Gene 140          
+Entry 13 : Gene  73          
+Entry 14 : Gene  23          
+Entry 15 : Gene   2 (flipped)
+
+
+> coef(fitW)
+  Intercept Predictor 1 Predictor 2 Predictor 3 
+ -3.0532627   0.5126493  -5.4154448   6.1338757 
+> plot(fitW)
+> fitted(fitW)
+   Predictor 1 Predictor 2  Predictor 3
+1   -0.4060399 -0.07464815 -0.028169187
+2    0.9430274 -0.06085408 -0.072092784
+3   -0.6145205 -0.07113486 -0.025958022
+4   -1.3627031 -0.20419474 -0.035688525
+5   -1.3734152 -0.16308366 -0.049328858
+6    1.0657803  0.03035889 -0.061855154
+7   -1.3374205 -0.15435873 -0.011033113
+8   -1.3354139 -0.15541127  0.006084757
+9   -0.4067449 -0.07274069 -0.036365641
+10   0.2760965 -0.10639400 -0.091084023
+11  -1.2437437 -0.03430185 -0.003883833
+12  -0.9485866 -0.08602487 -0.008267847
+13  -1.3183164 -0.10202449 -0.100689913
+14   0.5652176 -0.05799033 -0.060489791
+15  -1.3396861 -0.11591672 -0.034943447
+16  -1.3573863 -0.12957623  0.003937245
+17  -0.4053540 -0.10862732 -0.021728478
+18  -1.1799757 -0.09815511 -0.008287326
+19  -1.2076066 -0.13663833 -0.032452774
+20  -0.9575222 -0.07371898 -0.062767649
+21  -1.0457692 -0.10205298 -0.001820048
+22  -1.1115955 -0.14417662 -0.054465167
+23   0.1934126 -0.14646046 -0.048362945
+24  -1.4346453 -0.11915112  0.022833576
+25  -1.2171742 -0.13518107 -0.019291338
+26  -1.2463141 -0.10646528 -0.054424278
+27  -1.2163623 -0.07119922 -0.030853434
+28   0.7410577 -0.59063592  0.316590057
+29   2.8713446 -0.44314986  0.339721985
+30   2.8404211 -0.45458805  0.289022619
+31   2.5610426 -0.50255329  0.355455040
+32   2.8598801 -0.48030548  0.337470075
+33   1.6246713 -0.52645403  0.364288105
+34   1.1566060 -0.57145319  0.326016744
+35   1.3758300 -0.55623830  0.314298968
+36   2.8477323 -0.48881856  0.349464891
+37   2.8649981 -0.39457683  0.321771792
+38   1.2206500 -0.54763894  0.342840734
+> 
+> identical(predict(fitW), fitted(fitW))
+[1] TRUE
+> predict(fitW, type = "cla")
+   3 Predictors
+1             0
+2             0
+3             0
+4             0
+5             0
+6             0
+7             0
+8             0
+9             0
+10            0
+11            0
+12            0
+13            0
+14            0
+15            0
+16            0
+17            0
+18            0
+19            0
+20            0
+21            0
+22            0
+23            0
+24            0
+25            0
+26            0
+27            0
+28            1
+29            1
+30            1
+31            1
+32            1
+33            1
+34            1
+35            1
+36            1
+37            1
+38            1
+> predict(fitW, type = "pro")
+   3 Predictors
+1    0.04609094
+2    0.06401532
+3    0.04139605
+4    0.05391340
+5    0.04005012
+6    0.04518684
+7    0.04876980
+8    0.05422219
+9    0.04348338
+10   0.05243858
+11   0.02850020
+12   0.04211169
+13   0.02200558
+14   0.05622652
+15   0.03466817
+16   0.04638596
+17   0.05699642
+18   0.04002296
+19   0.04182864
+20   0.02847270
+21   0.04530921
+22   0.04006266
+23   0.07888356
+24   0.04727170
+25   0.04463773
+26   0.03078498
+27   0.02987202
+28   0.92180445
+29   0.94796476
+30   0.93323652
+31   0.95936027
+32   0.95622457
+33   0.94609423
+34   0.93302359
+35   0.93035817
+36   0.96073516
+37   0.92594411
+38   0.93346365
+> 
+> predict(fitW, newdata = xN[,101:250], newc = xN[,1:100])
+  Predictor 1 Predictor 2 Predictor 3
+1   0.4595198   0.3708049  -0.2264831
+2   0.3588264   0.0067910   0.1107539
+3  -1.4099869   0.1514969  -0.6695877
+> predict(fitW, newdata = xN[,101:250], newc = xN[,1:100], ty = "pro")
+  3 Predictors
+1 0.0019952613
+2 0.0973751300
+3 0.0001659461
+> predict(fitW, newdata = xN[,101:250], newc = xN[,1:100], ty = "cla", noc=c(1,3))
+  1 Predictors 3 Predictors
+1            0            0
+2            0            0
+3            0            0
+> 
+> ## Checking the output of fit3
+> fit3
+
+Pelora called with lambda = 0.03125, 3 clusters fitted
+
+Cluster 1 : Contains 16 genes, final criterion 9.019
+Cluster 2 : Contains 15 genes, final criterion 6.184
+Cluster 3 : Contains 14 genes, final criterion 4.873
+
+> summary(fit3)
+
+Pelora called with lambda = 0.03125, 3 clusters fitted
+
+Cluster 1 : Contains 16 genes, final criterion 9.019
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene 135           : Name V135
+Entry  6 : Gene 240           : Name V240
+Entry  7 : Gene 100           : Name V100
+Entry  8 : Gene 134 (flipped) : Name V134
+Entry  9 : Gene  60 (flipped) : Name V60
+Entry 10 : Gene 243 (flipped) : Name V243
+Entry 11 : Gene 245           : Name V245
+Entry 12 : Gene 153           : Name V153
+Entry 13 : Gene 176 (flipped) : Name V176
+Entry 14 : Gene 114           : Name V114
+Entry 15 : Gene  75 (flipped) : Name V75
+Entry 16 : Gene 173           : Name V173
+
+Cluster 2 : Contains 15 genes, final criterion 6.184
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 225           : Name V225
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 100           : Name V100
+Entry  5 : Gene 204           : Name V204
+Entry  6 : Gene  20           : Name V20
+Entry  7 : Gene 215           : Name V215
+Entry  8 : Gene 228           : Name V228
+Entry  9 : Gene 105           : Name V105
+Entry 10 : Gene 186 (flipped) : Name V186
+Entry 11 : Gene 173           : Name V173
+Entry 12 : Gene 218           : Name V218
+Entry 13 : Gene 222 (flipped) : Name V222
+Entry 14 : Gene 123           : Name V123
+Entry 15 : Gene  58           : Name V58
+
+Cluster 3 : Contains 14 genes, final criterion 4.873
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 195 (flipped) : Name V195
+Entry  5 : Gene 236 (flipped) : Name V236
+Entry  6 : Gene  95           : Name V95
+Entry  7 : Gene  92 (flipped) : Name V92
+Entry  8 : Gene 243 (flipped) : Name V243
+Entry  9 : Gene  75           : Name V75
+Entry 10 : Gene  30 (flipped) : Name V30
+Entry 11 : Gene  41           : Name V41
+Entry 12 : Gene  58           : Name V58
+Entry 13 : Gene  17 (flipped) : Name V17
+Entry 14 : Gene 198           : Name V198
+
+
+> coef(fit3)
+  Intercept Predictor 1 Predictor 2 Predictor 3 
+-0.04619694  4.04250968  4.92367256  4.75737556 
+> plot(fit3)
+> fitted(fit3)
+   Predictor 1 Predictor 2 Predictor 3
+1   -0.2285066 -0.12432003 -0.33983410
+2   -0.2017373 -0.04138686 -0.38015308
+3   -0.2615608 -0.04055937 -0.39419765
+4   -0.2780412 -0.09475581 -0.34197622
+5   -0.2723402 -0.09896039 -0.36545322
+6   -0.2570126 -0.10788684 -0.30544423
+7   -0.2582871 -0.06090086 -0.29378052
+8   -0.2432369 -0.01509041 -0.38560155
+9   -0.2800386 -0.05157562 -0.34834236
+10  -0.2349189 -0.05628643 -0.30459387
+11  -0.3159678 -0.10866037 -0.33425831
+12  -0.3399309 -0.01791853 -0.39402569
+13  -0.3098570 -0.06796453 -0.35068307
+14  -0.2911981  0.01395371 -0.36716178
+15  -0.2804411 -0.11240865 -0.35376125
+16  -0.2989401 -0.04680822 -0.34514395
+17  -0.3064803 -0.03457211 -0.29166647
+18  -0.3009477 -0.04104916 -0.36065756
+19  -0.2803658 -0.01647425 -0.34734494
+20  -0.3619075 -0.02772715 -0.36860677
+21  -0.2534279 -0.06582762 -0.32617354
+22  -0.2767475 -0.05673009 -0.33408313
+23  -0.2594244 -0.06804213 -0.33286369
+24  -0.2686963 -0.05743951 -0.37159634
+25  -0.2493578 -0.07558631 -0.33871439
+26  -0.3445316 -0.05378141 -0.37364051
+27  -0.2656955 -0.09953485 -0.35245539
+28   0.1830933  0.33047470  0.02750604
+29   0.2351452  0.33496886  0.08166425
+30   0.1945311  0.39994464  0.07867998
+31   0.2281800  0.35522562  0.04344020
+32   0.2371330  0.36371202  0.10003395
+33   0.2427357  0.31841017  0.07078407
+34   0.2418461  0.35177789  0.05783627
+35   0.1971921  0.33679719  0.04908993
+36   0.2026620  0.34749665  0.08493945
+37   0.2051926  0.31614019  0.12107278
+38   0.2108391  0.32627858  0.07758265
+> 
+> identical(predict(fit3), fitted(fit3))
+[1] TRUE
+> predict(fit3, type = "cla")
+   3 Predictors
+1             0
+2             0
+3             0
+4             0
+5             0
+6             0
+7             0
+8             0
+9             0
+10            0
+11            0
+12            0
+13            0
+14            0
+15            0
+16            0
+17            0
+18            0
+19            0
+20            0
+21            0
+22            0
+23            0
+24            0
+25            0
+26            0
+27            0
+28            1
+29            1
+30            1
+31            1
+32            1
+33            1
+34            1
+35            1
+36            1
+37            1
+38            1
+> predict(fit3, type = "pro")
+   3 Predictors
+1    0.03921216
+2    0.05345247
+3    0.03997880
+4    0.03683994
+5    0.03315062
+6    0.04438366
+7    0.05798673
+8    0.05029546
+9    0.04354692
+10   0.06168399
+11   0.03080765
+12   0.03282706
+13   0.03551075
+14   0.05208485
+15   0.03178925
+16   0.04200263
+17   0.05504766
+18   0.03989938
+19   0.05150768
+20   0.03231636
+21   0.04990098
+22   0.04592947
+23   0.04681982
+24   0.03980893
+25   0.04574790
+26   0.02984844
+27   0.03601593
+28   0.92070506
+29   0.94989184
+30   0.95621551
+31   0.94437543
+32   0.96004067
+33   0.94477642
+34   0.94972460
+35   0.93356412
+36   0.94725577
+37   0.94862470
+38   0.94167893
+> 
+> predict(fit3, newdata = xN)
+  Predictor 1 Predictor 2 Predictor 3
+1   0.1799321 -0.19641747   0.4566692
+2   0.3055774 -0.04751572  -0.0557937
+3  -0.1820159 -0.25441379  -0.0938568
+> predict(fit3, newdata = xN, type = "pro")
+  3 Predictors
+1    0.8683710
+2    0.6659045
+3    0.0771895
+> predict(fit3, newdata = xN, type = "cla")
+  3 Predictors
+1            1
+2            1
+3            0
+> 
+> ## checking the output of fit4
+> stopifnot(identical(fit1$genes[[1]], fit4$genes[[1]]))
+> str(fit4)
+List of 14
+ $ genes     :List of 1
+  ..$ : int [1:16] 69 63 66 96 135 240 100 384 310 493 ...
+ $ values    : num [1:38, 1] -0.229 -0.202 -0.262 -0.278 -0.272 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:38] "1" "2" "3" "4" ...
+  .. ..$ : NULL
+ $ y         : num [1:38] 0 0 0 0 0 0 0 0 0 0 ...
+ $ yvals     : int [1:2] 0 1
+ $ lambda    : num 0.0312
+ $ noc       : num 1
+ $ px        : int 500
+ $ flip      : chr "pm"
+ $ var.type  : Factor w/ 2 levels "Cluster","Clini..": 1
+ $ crit      :List of 1
+  ..$ : num [1:16] 12.15 10.66 10.17  9.86  9.66 ...
+ $ signs     : num [1:500] 0 0 0 0 0 0 0 0 0 0 ...
+ $ samp.names: chr [1:38] "1" "2" "3" "4" ...
+ $ gene.names: chr [1:500] "V1" "V2" "V3" "V4" ...
+ $ call      : language pelora(x = x, y = leukemia.y, noc = 1, flip = "pm", standardize = FALSE,      trace = 2)
+ - attr(*, "class")= chr "pelora"
+> summary(fit4)
+
+Pelora called with lambda = 0.03125, 1 cluster fitted
+
+Cluster 1 : Contains 16 genes, final criterion 9.019
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene 135           : Name V135
+Entry  6 : Gene 240           : Name V240
+Entry  7 : Gene 100           : Name V100
+Entry  8 : Gene 134 (flipped) : Name V134
+Entry  9 : Gene  60 (flipped) : Name V60
+Entry 10 : Gene 243 (flipped) : Name V243
+Entry 11 : Gene 245           : Name V245
+Entry 12 : Gene 153           : Name V153
+Entry 13 : Gene 176 (flipped) : Name V176
+Entry 14 : Gene 114           : Name V114
+Entry 15 : Gene  75 (flipped) : Name V75
+Entry 16 : Gene 173           : Name V173
+
+
+> 
+> ## Checking the output of fit3
+> fit5
+
+Pelora called with lambda = 0.03125, 10 clusters fitted
+
+Cluster  1 : Contains 23 genes, final criterion 8.937
+Cluster  2 : Contains 13 genes, final criterion 6.134
+Cluster  3 : Contains 20 genes, final criterion 4.838
+Cluster  4 : Contains 23 genes, final criterion 4.081
+Cluster  5 : Contains 29 genes, final criterion 3.585
+Cluster  6 : Contains 17 genes, final criterion 3.236
+Cluster  7 : Contains 20 genes, final criterion 2.975
+Cluster  8 : Contains 22 genes, final criterion 2.772
+Cluster  9 : Contains 27 genes, final criterion 2.610
+Cluster 10 : Contains 18 genes, final criterion 2.479
+
+> summary(fit5)
+
+Pelora called with lambda = 0.03125, 10 clusters fitted
+
+Cluster  1 : Contains 23 genes, final criterion 8.937
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene 135           : Name V135
+Entry  6 : Gene  59           : Name V59
+Entry  7 : Gene  15           : Name V15
+Entry  8 : Gene 114           : Name V114
+Entry  9 : Gene 196           : Name V196
+Entry 10 : Gene 198           : Name V198
+Entry 11 : Gene  19           : Name V19
+Entry 12 : Gene  30 (flipped) : Name V30
+Entry 13 : Gene  18           : Name V18
+Entry 14 : Gene 146           : Name V146
+Entry 15 : Gene  94           : Name V94
+Entry 16 : Gene  11 (flipped) : Name V11
+Entry 17 : Gene  33           : Name V33
+Entry 18 : Gene 234 (flipped) : Name V234
+Entry 19 : Gene 191           : Name V191
+Entry 20 : Gene 235           : Name V235
+Entry 21 : Gene  38           : Name V38
+Entry 22 : Gene  41           : Name V41
+Entry 23 : Gene 248           : Name V248
+
+Cluster  2 : Contains 13 genes, final criterion 6.134
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 225           : Name V225
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 100           : Name V100
+Entry  5 : Gene 183           : Name V183
+Entry  6 : Gene  96           : Name V96
+Entry  7 : Gene  60 (flipped) : Name V60
+Entry  8 : Gene  19           : Name V19
+Entry  9 : Gene 196           : Name V196
+Entry 10 : Gene  30 (flipped) : Name V30
+Entry 11 : Gene  61           : Name V61
+Entry 12 : Gene  41           : Name V41
+Entry 13 : Gene  38           : Name V38
+
+Cluster  3 : Contains 20 genes, final criterion 4.838
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene 146           : Name V146
+Entry  6 : Gene 190           : Name V190
+Entry  7 : Gene  60 (flipped) : Name V60
+Entry  8 : Gene 245           : Name V245
+Entry  9 : Gene  56           : Name V56
+Entry 10 : Gene 156           : Name V156
+Entry 11 : Gene 165 (flipped) : Name V165
+Entry 12 : Gene 235           : Name V235
+Entry 13 : Gene  19           : Name V19
+Entry 14 : Gene  30 (flipped) : Name V30
+Entry 15 : Gene  97           : Name V97
+Entry 16 : Gene  18           : Name V18
+Entry 17 : Gene 234 (flipped) : Name V234
+Entry 18 : Gene  47           : Name V47
+Entry 19 : Gene  29           : Name V29
+Entry 20 : Gene 241           : Name V241
+
+Cluster  4 : Contains 23 genes, final criterion 4.081
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene  33           : Name V33
+Entry  6 : Gene  19           : Name V19
+Entry  7 : Gene   2           : Name V2
+Entry  8 : Gene  60 (flipped) : Name V60
+Entry  9 : Gene 198           : Name V198
+Entry 10 : Gene 234 (flipped) : Name V234
+Entry 11 : Gene 245           : Name V245
+Entry 12 : Gene 196           : Name V196
+Entry 13 : Gene  47           : Name V47
+Entry 14 : Gene 228           : Name V228
+Entry 15 : Gene 123           : Name V123
+Entry 16 : Gene  30 (flipped) : Name V30
+Entry 17 : Gene 126 (flipped) : Name V126
+Entry 18 : Gene  39 (flipped) : Name V39
+Entry 19 : Gene  41           : Name V41
+Entry 20 : Gene  38           : Name V38
+Entry 21 : Gene  14 (flipped) : Name V14
+Entry 22 : Gene 212           : Name V212
+Entry 23 : Gene 114           : Name V114
+
+Cluster  5 : Contains 29 genes, final criterion 3.585
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  33           : Name V33
+Entry  5 : Gene  96           : Name V96
+Entry  6 : Gene  19           : Name V19
+Entry  7 : Gene  56           : Name V56
+Entry  8 : Gene  59           : Name V59
+Entry  9 : Gene 198           : Name V198
+Entry 10 : Gene 234 (flipped) : Name V234
+Entry 11 : Gene  30 (flipped) : Name V30
+Entry 12 : Gene 126 (flipped) : Name V126
+Entry 13 : Gene 228           : Name V228
+Entry 14 : Gene 245           : Name V245
+Entry 15 : Gene 194           : Name V194
+Entry 16 : Gene 235           : Name V235
+Entry 17 : Gene 137           : Name V137
+Entry 18 : Gene  39 (flipped) : Name V39
+Entry 19 : Gene  41           : Name V41
+Entry 20 : Gene  47           : Name V47
+Entry 21 : Gene  83           : Name V83
+Entry 22 : Gene 114           : Name V114
+Entry 23 : Gene 197           : Name V197
+Entry 24 : Gene 200 (flipped) : Name V200
+Entry 25 : Gene  99           : Name V99
+Entry 26 : Gene 165 (flipped) : Name V165
+Entry 27 : Gene  60 (flipped) : Name V60
+Entry 28 : Gene 212           : Name V212
+Entry 29 : Gene  75           : Name V75
+
+Cluster  6 : Contains 17 genes, final criterion 3.236
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 225           : Name V225
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 100           : Name V100
+Entry  5 : Gene 183           : Name V183
+Entry  6 : Gene  96           : Name V96
+Entry  7 : Gene  60 (flipped) : Name V60
+Entry  8 : Gene  19           : Name V19
+Entry  9 : Gene 196           : Name V196
+Entry 10 : Gene  30 (flipped) : Name V30
+Entry 11 : Gene  66           : Name V66
+Entry 12 : Gene  16 (flipped) : Name V16
+Entry 13 : Gene 165 (flipped) : Name V165
+Entry 14 : Gene 245           : Name V245
+Entry 15 : Gene 156           : Name V156
+Entry 16 : Gene  39 (flipped) : Name V39
+Entry 17 : Gene  18           : Name V18
+
+Cluster  7 : Contains 20 genes, final criterion 2.975
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 225           : Name V225
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 100           : Name V100
+Entry  5 : Gene 183           : Name V183
+Entry  6 : Gene  96           : Name V96
+Entry  7 : Gene  60 (flipped) : Name V60
+Entry  8 : Gene  19           : Name V19
+Entry  9 : Gene 174           : Name V174
+Entry 10 : Gene 196           : Name V196
+Entry 11 : Gene 204           : Name V204
+Entry 12 : Gene  30 (flipped) : Name V30
+Entry 13 : Gene  41           : Name V41
+Entry 14 : Gene 228           : Name V228
+Entry 15 : Gene  16 (flipped) : Name V16
+Entry 16 : Gene 114           : Name V114
+Entry 17 : Gene 234 (flipped) : Name V234
+Entry 18 : Gene  47           : Name V47
+Entry 19 : Gene  75           : Name V75
+Entry 20 : Gene 142 (flipped) : Name V142
+
+Cluster  8 : Contains 22 genes, final criterion 2.772
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 160           : Name V160
+Entry  3 : Gene 126 (flipped) : Name V126
+Entry  4 : Gene 183           : Name V183
+Entry  5 : Gene 100           : Name V100
+Entry  6 : Gene  56           : Name V56
+Entry  7 : Gene  96           : Name V96
+Entry  8 : Gene  19           : Name V19
+Entry  9 : Gene  30 (flipped) : Name V30
+Entry 10 : Gene  93           : Name V93
+Entry 11 : Gene  39 (flipped) : Name V39
+Entry 12 : Gene 198           : Name V198
+Entry 13 : Gene 228           : Name V228
+Entry 14 : Gene  64           : Name V64
+Entry 15 : Gene 147 (flipped) : Name V147
+Entry 16 : Gene 197           : Name V197
+Entry 17 : Gene 137           : Name V137
+Entry 18 : Gene  41           : Name V41
+Entry 19 : Gene 194           : Name V194
+Entry 20 : Gene 114           : Name V114
+Entry 21 : Gene 200 (flipped) : Name V200
+Entry 22 : Gene 102           : Name V102
+
+Cluster  9 : Contains 27 genes, final criterion 2.610
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene  63           : Name V63
+Entry  3 : Gene  66           : Name V66
+Entry  4 : Gene  96           : Name V96
+Entry  5 : Gene  56           : Name V56
+Entry  6 : Gene 196           : Name V196
+Entry  7 : Gene 235           : Name V235
+Entry  8 : Gene  64           : Name V64
+Entry  9 : Gene  60 (flipped) : Name V60
+Entry 10 : Gene 212           : Name V212
+Entry 11 : Gene 165 (flipped) : Name V165
+Entry 12 : Gene  30 (flipped) : Name V30
+Entry 13 : Gene 126 (flipped) : Name V126
+Entry 14 : Gene  17 (flipped) : Name V17
+Entry 15 : Gene 137           : Name V137
+Entry 16 : Gene 245           : Name V245
+Entry 17 : Gene 228           : Name V228
+Entry 18 : Gene  73           : Name V73
+Entry 19 : Gene  47           : Name V47
+Entry 20 : Gene  75           : Name V75
+Entry 21 : Gene 234 (flipped) : Name V234
+Entry 22 : Gene 184 (flipped) : Name V184
+Entry 23 : Gene 181           : Name V181
+Entry 24 : Gene  29           : Name V29
+Entry 25 : Gene  46 (flipped) : Name V46
+Entry 26 : Gene 114           : Name V114
+Entry 27 : Gene  16 (flipped) : Name V16
+
+Cluster 10 : Contains 18 genes, final criterion 2.479
+Entry  1 : Gene  69           : Name V69
+Entry  2 : Gene 183           : Name V183
+Entry  3 : Gene  96           : Name V96
+Entry  4 : Gene 126 (flipped) : Name V126
+Entry  5 : Gene 194           : Name V194
+Entry  6 : Gene 100           : Name V100
+Entry  7 : Gene 228           : Name V228
+Entry  8 : Gene  30 (flipped) : Name V30
+Entry  9 : Gene 234 (flipped) : Name V234
+Entry 10 : Gene  19           : Name V19
+Entry 11 : Gene  16 (flipped) : Name V16
+Entry 12 : Gene 137           : Name V137
+Entry 13 : Gene 114           : Name V114
+Entry 14 : Gene  47           : Name V47
+Entry 15 : Gene  41           : Name V41
+Entry 16 : Gene 196           : Name V196
+Entry 17 : Gene  39 (flipped) : Name V39
+Entry 18 : Gene   9 (flipped) : Name V9
+
+
+> coef(fit5)
+   Intercept  Predictor 1  Predictor 2  Predictor 3  Predictor 4  Predictor 5 
+   -1.263888     1.092156     0.953414     1.194932     1.392377     1.393840 
+ Predictor 6  Predictor 7  Predictor 8  Predictor 9 Predictor 10 
+    1.102113     1.103609     1.218871     1.433615     1.388644 
+> plot(fit5)
+> fitted(fit5)
+   Predictor 1 Predictor 2 Predictor 3 Predictor 4 Predictor 5 Predictor 6
+1  -0.05740090  -0.2378322  -0.2054544  -0.2539594 -0.10330163  -0.2420074
+2  -0.07176094  -0.2133628  -0.1985109  -0.2207359 -0.05852902  -0.2870251
+3  -0.05371019  -0.2463805  -0.2123037  -0.2485998 -0.05174492  -0.3140200
+4  -0.10200895  -0.3130361  -0.1861819  -0.2713162 -0.07415339  -0.3177963
+5  -0.08146786  -0.2245933  -0.1682812  -0.2110059 -0.06159841  -0.2332439
+6  -0.06585883  -0.2282135  -0.1974000  -0.2882826 -0.09414366  -0.2690736
+7  -0.08503851  -0.2073292  -0.1715000  -0.2582012 -0.06358996  -0.2872798
+8  -0.03834486  -0.1935219  -0.1941525  -0.2340992 -0.09842033  -0.2453988
+9  -0.12239840  -0.3482603  -0.2461425  -0.2251316 -0.06764083  -0.2670880
+10 -0.07330284  -0.2168472  -0.1639811  -0.2012341 -0.06694924  -0.2871032
+11 -0.10867767  -0.2697033  -0.2231957  -0.2389293 -0.07716958  -0.2862080
+12 -0.09865721  -0.3154047  -0.2244461  -0.2504488 -0.09816271  -0.2504944
+13 -0.15460433  -0.3049976  -0.1967703  -0.2297828 -0.05975886  -0.3071435
+14 -0.07489032  -0.2460514  -0.1563842  -0.2559457 -0.06572317  -0.2601187
+15 -0.14918629  -0.2307294  -0.2484490  -0.2679444 -0.11817660  -0.3121866
+16 -0.08909709  -0.3329785  -0.1767315  -0.2397290 -0.05840394  -0.2990983
+17 -0.09008501  -0.3060012  -0.1426789  -0.2409471 -0.09737120  -0.2801538
+18 -0.09082136  -0.3139859  -0.2318668  -0.2397892 -0.05544900  -0.2675989
+19 -0.05770104  -0.2915290  -0.1715241  -0.2529709 -0.08757180  -0.2143864
+20 -0.10413823  -0.2977802  -0.1982662  -0.2891479 -0.08224940  -0.3350029
+21 -0.09876537  -0.2578006  -0.1538838  -0.2670675 -0.10257196  -0.2723327
+22 -0.09330765  -0.2349183  -0.1922073  -0.2325007 -0.07096672  -0.2969476
+23 -0.05229937  -0.1998427  -0.2342817  -0.2571157 -0.07217236  -0.2546015
+24 -0.09506369  -0.2503797  -0.1622443  -0.2730107 -0.07561290  -0.2732930
+25 -0.07823516  -0.2600154  -0.1737728  -0.2247306 -0.08681740  -0.2690563
+26 -0.06537327  -0.2801471  -0.1921717  -0.2327420 -0.09985593  -0.3241975
+27 -0.08857945  -0.3090842  -0.2516781  -0.2241610 -0.05444209  -0.2948669
+28  0.47282911   0.4068715   0.3584412   0.2219967  0.39705923   0.3047868
+29  0.53481006   0.4312844   0.3599425   0.2557114  0.39646427   0.2982807
+30  0.55229198   0.3898961   0.3473013   0.2359105  0.40786398   0.3506663
+31  0.51429585   0.4421616   0.3762177   0.2169338  0.38199492   0.3205843
+32  0.52155065   0.4543756   0.3824543   0.2420726  0.41137099   0.3178250
+33  0.54219535   0.4415035   0.3239202   0.2463220  0.44731770   0.3339533
+34  0.55717995   0.3856668   0.3666105   0.2531890  0.41367091   0.3266358
+35  0.48158087   0.4024536   0.3571054   0.2573695  0.38805767   0.3196494
+36  0.48755069   0.4449109   0.3588011   0.2162386  0.39108926   0.3181900
+37  0.52814334   0.4415510   0.3526971   0.2296364  0.42362763   0.3442045
+38  0.50267647   0.4124829   0.3639063   0.2408612  0.41493909   0.3263815
+   Predictor 7  Predictor 8 Predictor 9 Predictor 10
+1  -0.09600989 -0.001819951  -0.2366879   -0.2280111
+2  -0.05435035 -0.011552570  -0.2432322   -0.1660971
+3  -0.07876711 -0.047017620  -0.2354441   -0.1637705
+4  -0.06899297 -0.038368749  -0.2485162   -0.2103664
+5  -0.09062073  0.023094950  -0.2550651   -0.1905085
+6  -0.10900875 -0.013011454  -0.2260846   -0.1672815
+7  -0.11590539  0.012067860  -0.1955669   -0.1996333
+8  -0.08233505 -0.022969531  -0.2745118   -0.1692203
+9  -0.16534357  0.009396337  -0.2430416   -0.1711755
+10 -0.08035109 -0.026963481  -0.2419834   -0.2167426
+11 -0.16004548  0.012551229  -0.2263733   -0.1785564
+12 -0.05908760  0.007698224  -0.2479151   -0.2076002
+13 -0.06749295 -0.036718451  -0.2522422   -0.1815977
+14 -0.09709856 -0.017244900  -0.2078658   -0.1523384
+15 -0.09785269 -0.044189561  -0.2592268   -0.1964127
+16 -0.05314759 -0.049359591  -0.2502964   -0.2269700
+17 -0.08036116  0.002268354  -0.2259342   -0.1763963
+18 -0.11356711 -0.024540626  -0.1871126   -0.2293711
+19 -0.06182292 -0.001499333  -0.2136437   -0.1663365
+20 -0.08752545  0.011751234  -0.2279341   -0.1914677
+21 -0.07741759  0.040126974  -0.2233052   -0.1753182
+22 -0.08382331 -0.015241470  -0.2235292   -0.2223061
+23 -0.04958578 -0.055704428  -0.2490510   -0.1694390
+24 -0.12212321 -0.004111195  -0.2388775   -0.1670595
+25 -0.06193503 -0.030825731  -0.2109802   -0.1960159
+26 -0.08561294  0.039520084  -0.2306625   -0.1659091
+27 -0.12198805 -0.026830688  -0.2345240   -0.2025389
+28  0.48794325  0.517192239   0.2632434    0.2706610
+29  0.53720223  0.507933671   0.2306012    0.2781190
+30  0.50866612  0.547674514   0.2449258    0.2590869
+31  0.53585535  0.531304666   0.2356255    0.3200875
+32  0.52137129  0.528295351   0.2425170    0.2787792
+33  0.53905429  0.562126355   0.2290172    0.3332732
+34  0.52008274  0.529309396   0.2504057    0.2568556
+35  0.52297850  0.518059563   0.2475336    0.2791112
+36  0.52171194  0.558640513   0.2239726    0.3128597
+37  0.50566199  0.572079647   0.2488847    0.2920843
+38  0.49014299  0.541958475   0.2050877    0.3146395
+> 
+> identical(predict(fit5), fitted(fit5))
+[1] TRUE
+> predict(fit5, type = "cla")
+   10 Predictors
+1              0
+2              0
+3              0
+4              0
+5              0
+6              0
+7              0
+8              0
+9              0
+10             0
+11             0
+12             0
+13             0
+14             0
+15             0
+16             0
+17             0
+18             0
+19             0
+20             0
+21             0
+22             0
+23             0
+24             0
+25             0
+26             0
+27             0
+28             1
+29             1
+30             1
+31             1
+32             1
+33             1
+34             1
+35             1
+36             1
+37             1
+38             1
+> predict(fit5, type = "pro")
+   10 Predictors
+1     0.03464745
+2     0.04142482
+3     0.03610034
+4     0.02934316
+5     0.04282469
+6     0.03519502
+7     0.03935736
+8     0.03904325
+9     0.02980018
+10    0.03894060
+11    0.03242348
+12    0.03224283
+13    0.03126671
+14    0.04150623
+15    0.02578653
+16    0.03144669
+17    0.03699559
+18    0.03268529
+19    0.04197882
+20    0.03047726
+21    0.03854902
+22    0.03524322
+23    0.03748378
+24    0.03552810
+25    0.03857111
+26    0.03697109
+27    0.03065476
+28    0.96043059
+29    0.96536593
+30    0.96608205
+31    0.96700939
+32    0.96803967
+33    0.97185875
+34    0.96689238
+35    0.96356451
+36    0.96546450
+37    0.96960672
+38    0.96507840
+> 
+> predict(fit5, newdata = xN)
+   Predictor 1 Predictor 2 Predictor 3 Predictor 4 Predictor 5 Predictor 6
+1  0.250058825 -0.02469018  0.08523323  0.07984785  0.09111750  -0.3125812
+2 -0.195885156 -0.11673035 -0.05742277 -0.02582920  0.03830473  -0.1122247
+3 -0.007125375 -0.10584263 -0.32227726  0.17173633  0.05689872  -0.3108255
+  Predictor 7  Predictor 8 Predictor 9 Predictor 10
+1 -0.11920028 -0.151434080  0.04217618  -0.15171596
+2  0.20241032  0.004925248 -0.16528421  -0.01083817
+3 -0.07666402 -0.032078219 -0.17072148  -0.13726965
+> predict(fit5, newdata = xN, type = "pro")
+  10 Predictors
+1    0.18465240
+2    0.14348876
+3    0.08779257
+> predict(fit5, newdata = xN, type = "cla")
+  10 Predictors
+1             0
+2             0
+3             0
+> 
+> ## Running time
+> cat('Time elapsed: (total) ', proc.time() - .proctime00,'\n')
+Time elapsed: (total)  22.17 0.06 22.29 0 0 
+> 
