@@ -1,10 +1,10 @@
 Package:	supclust
 Title:		Supervised Clustering of Genes
-Version:	1.0-3
-Date:		2004-11-16
+Version:	1.0-4
+Date:		2005-05-10
 Description:	Methodology for Supervised Grouping of Predictor Variables
 Author:		Marcel Dettling and Martin Maechler <maechler@stat.math.ethz.ch>
 Maintainer:	Marcel Dettling <dettling@stat.math.ethz.ch>
 URL:		http://www.stat.math.ethz.ch/~dettling/
 License:	GPL 2.0
-Packaged: Wed Nov 17 01:18:04 2004; dettling
+Packaged: Tue May 10 18:07:04 2005; dettling
