@@ -146,7 +146,7 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
 
     ## Restoring the original order of output and response
     y <- y[io]
-    for (i in 1:length(mn.x)) mn.x[[i]] <- mn.x[[i]][io,]
+    for (i in 1:length(mn.x)) mn.x[[i]] <- mn.x[[i]][io,,drop=FALSE]
 
     ## Output
     r <- list(clist = gList,
