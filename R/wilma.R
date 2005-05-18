@@ -295,17 +295,57 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
     ## Return fitted values for the training data
     if (is.null(newdata))
       {
-        if (length(noc)==1 && noc>object$noc)
-            stop("You cannot predict with more predictors than you have fitted")
+        if (type == "fitted") {
+          if (length(noc)==1 && noc>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
                  
-        if (length(noc)==1 && noc<=object$noc)
-            return(fitted(object))
+          if (length(noc)==1 && noc<=object$noc)
+          return(fitted(object))
         
-        if (length(noc)>1 & max(noc)>object$noc)
-            stop("You cannot predict with more predictors than you have fitted")
+          if (length(noc)>1 & max(noc)>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
         
-        if (length(noc)>1 & max(noc)<=object$noc)
-            return(fitted(object)[, noc, drop = FALSE])
+          if (length(noc)>1 & max(noc)<=object$noc)
+          return(fitted(object)[, noc, drop = FALSE])
+        }
+
+        if (type == "class") {   
+          if (length(noc)==1 && noc>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
+                 
+          if (length(noc)==1 && noc<=object$noc)
+            {
+              xlearn <- (fitted(object))[,1:noc, drop = FALSE]
+              xtest  <- (fitted(object))[,1:noc, drop = FALSE]
+              return(switch(classifier,
+                            nnr      = nnr(xlearn, xtest, object$y),
+                            dlda     = dlda(xlearn, xtest, object$y),
+                            logreg   = logreg(xlearn, xtest, object$y),
+                            aggtrees = aggtrees(xlearn, xtest, object$y)))
+            }
+
+          if (length(noc)>1 & max(noc)>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
+        
+          if (length(noc)>1 && max(noc)<=object$noc)
+            {
+              clmt <- NULL
+              for (i in 1:length(noc))
+                {
+                  xl <- (fitted(object))[, 1:(noc[i]), drop = FALSE]
+                  xt <- (fitted(object))[, 1:(noc[i]), drop = FALSE]
+                  cl <- switch(classifier,
+                               nnr      = nnr(xl, xt, object$y),
+                               dlda     = dlda(xl, xt, object$y),
+                               logreg   = logreg(xl, xt, object$y),
+                               aggtrees = aggtrees(xl, xt, object$y))
+                  cl           <- matrix(cl, ncol=1)
+                  dimnames(cl) <- list(1:nrow(xl), paste(noc[i],"Predictors"))
+                  clmt         <- cbind(clmt, cl)
+                }
+              return(clmt)
+            }
+        }  
       }
 
     ## Returning fitted values or class labels for test data
@@ -339,8 +379,20 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
         dimnames(xtest) <- list(sampnames, clusnames)
 
         ## Return the fitted values for the new data if requested
-        if (type == "fitted") return(xtest[,noc, drop = FALSE])
-
+        if (type == "fitted") {
+          if (length(noc)==1 && noc>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
+                 
+          if (length(noc)==1 && noc<=object$noc)
+          return(xtest[,1:noc, drop = FALSE])
+                  
+          if (length(noc)>1 & max(noc)>object$noc)
+          stop("You cannot predict with more predictors than you have fitted")
+        
+          if (length(noc)>1 & max(noc)<=object$noc)
+          return(xtest[,noc, drop = FALSE])
+        }                 
+                 
         ## Do 0/1-classification
         if (length(noc)==1 && noc>object$noc)
             stop("You cannot predict with more predictors than you have fitted")
