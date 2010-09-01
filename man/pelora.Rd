@@ -52,7 +52,7 @@ pelora(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
   for each of the predictors. Finally, \code{predict} is used for
   classifying test data with Pelora's internal penalized logistic
   regression classifier on the basis of the (gene) groups that have been
-  found. 
+  found.
 
   An object of class "pelora" is a list containing:
   \item{genes}{A list of length \code{noc}, containing integer vectors
@@ -95,7 +95,7 @@ pelora(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
 
   Marcel Dettling and Peter Bühlmann (2004).
   Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}
+  \emph{Journal of Multivariate Analysis} \bold{90}, 106--131.
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
 \seealso{\code{\link{wilma}} for another supervised clustering technique.}
