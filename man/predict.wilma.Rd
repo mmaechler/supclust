@@ -7,36 +7,36 @@
   nearest-neighbor rule, diagonal linear discriminant analysis, logistic
   regression and aggregated trees.}
 \usage{
-predict.wilma(object, newdata = NULL, type = c("fitted", "class"),
+\S3method{predict}{wilma}(object, newdata = NULL, type = c("fitted", "class"),
               classifier = c("nnr", "dlda", "logreg", "aggtrees"),
               noc = object$noc, ...)
 }
 \arguments{
-  \item{object}{An \R object of \code{\link{class}} \code{"wilma"},
+  \item{object}{an \R object of \code{\link{class}} \code{"wilma"},
     typically the result of \code{\link{wilma}()}.}
-  \item{newdata}{Numeric matrix with the same number of explanatory
+  \item{newdata}{numeric matrix with the same number of explanatory
     variables as the original \code{x}-matrix (\eqn{p} variables in
-    columns, \eqn{r} cases in rows). For example, these can be
+    columns, \eqn{r} cases in rows).  For example, these can be
     additional microarray gene expression data which should be
     predicted.}
-  \item{type}{Character string, describing whether fitted values
+  \item{type}{character string describing whether fitted values
     \code{"fitted"} or predicted class labels \code{"class"} should be
     returned.}
-  \item{classifier}{Character string, saying which classifier should be
-    used. Choices are \code{"nnr"}, the 1-nearest-neighbor-rule;
+  \item{classifier}{character string specifying which classifier should
+    be used.  Choices are \code{"nnr"}, the 1-nearest-neighbor-rule;
     \code{"dlda"}, diagonal linear discriminant analysis;
     \code{"logreg"}, logistic regression; \code{"aggtrees"} aggregated
     trees. }
-  \item{noc}{Integer, saying with how many clusters the fitted values or
+  \item{noc}{integer specifying how many clusters the fitted values or
     class label predictions should be determined. Also numeric vectors
     are allowed as an argument. The output is then a numeric matrix with
     fitted values or class label predictions for a multiple number of
-    clusters.} 
-  \item{\dots}{}
+    clusters.}
+  \item{\dots}{further arguments passed to and from methods.}
 }
 \details{
   If \code{newdata = NULL}, then the in-sample fitted values or class
-  label predictions are returned. 
+  label predictions are returned.
 }
 \value{
   Depending on whether \code{noc} is a single number or a numeric
