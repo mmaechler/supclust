@@ -6,7 +6,7 @@
   are based on the gene groups \code{pelora} found, and on its internal
   penalized logistic regression classifier.}
 \usage{
-predict.pelora(object, newdata = NULL, newclin = NULL,
+\S3method{predict}{pelora}(object, newdata = NULL, newclin = NULL,
                type = c("fitted", "probs", "class"), noc = object$noc, ...)
 }
 \arguments{
@@ -16,10 +16,10 @@ predict.pelora(object, newdata = NULL, newclin = NULL,
     variables as the original \code{x}-matrix (\eqn{p} variables in
     columns, \eqn{r} cases in rows). For example, these can be
     additional microarray gene expression data which should be
-    predicted.}  
+    predicted.}
   \item{newclin}{Numeric matrix with the same number of additional
     (clinical) explanatory variables as the original \code{u}-matrix
-    (\eqn{m} variables in columns, \eqn{r} cases in rows) that are used 
+    (\eqn{m} variables in columns, \eqn{r} cases in rows) that are used
     in the (penalized logistic regression) prediction model, but neither
     grouped nor averaged. Only needs to be given, if the model fit
     included an \code{u}-matrix. For example, these can be 'traditional'
@@ -48,19 +48,11 @@ predict.pelora(object, newdata = NULL, newclin = NULL,
   In the latter case, a numeric matrix with \code{length(noc)} columns,
   each containing fitted values for \code{noc} clusters, or
   probability estimates/class label predictions with \code{noc}
-  clusters, is returned.}
-}
-\references{
-  Marcel Dettling (2003)
-  \emph{Finding Groups of Predictive Genes from Microarray Data}, see
-  \url{http://stat.ethz.ch/~dettling/supervised.html}
-
-  Marcel Dettling and Peter Bühlmann (2004).
-  Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}.
+  clusters, is returned.
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{pelora}}}
+\seealso{\code{\link{pelora}}, also for references.
+}
 \examples{
 ## Working with a "real" microarray dataset
 data(leukemia, package="supclust")
