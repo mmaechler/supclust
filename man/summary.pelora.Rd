@@ -13,7 +13,8 @@
   \item{\dots}{Further arguments passed to and from methods.}
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{pelora}}}
+\seealso{\code{\link{pelora}}, also for references.
+}
 \examples{
  ## Running the examples of Pelora's help page
  example(pelora, echo = FALSE)
