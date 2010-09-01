@@ -20,17 +20,9 @@
     be used for plotting the class labels.}
   \item{\dots}{Further arguments passed to and from methods.}
 }
-\references{
-  Marcel Dettling (2003)
-  \emph{Finding Groups of Predictive Genes from Microarray Data}, see
-  \url{http://stat.ethz.ch/~dettling/supervised.html}
-
-  Marcel Dettling and Peter Bühlmann (2004).
-  Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}.
-}
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{pelora}}}
+\seealso{\code{\link{pelora}}, also for references.
+}
 \examples{
  ## Running the examples of Pelora's help page
  example(pelora, echo = FALSE)
