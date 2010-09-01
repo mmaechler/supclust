@@ -8,11 +8,12 @@
   \code{dlda} (diagonal linear discriminant analysis), \code{logreg}
   (logistic regression) and \code{aggtrees} (aggregated trees) are used
   for binary classification with the cluster representatives of Wilma's
-  output.} 
+  output.
+}
 \usage{
-dlda(xlearn, xtest, ylearn)
-nnr(xlearn, xtest, ylearn)
-logreg(xlearn, xtest, ylearn)
+dlda    (xlearn, xtest, ylearn)
+nnr     (xlearn, xtest, ylearn)
+logreg  (xlearn, xtest, ylearn)
 aggtrees(xlearn, xtest, ylearn)
 }
 
@@ -20,12 +21,12 @@ aggtrees(xlearn, xtest, ylearn)
   \item{xlearn}{Numeric matrix of explanatory variables (\eqn{q}
     variables in columns, \eqn{n} cases in rows), containing the learning
     or training data. Typically, these are the (gene) cluster
-    representatives of Wilma's output.} 
+    representatives of Wilma's output.}
   \item{xtest}{A numeric matrix of explanatory variables (\eqn{q}
     variables in columns, \eqn{m} cases in rows), containing the test or
     validation data. Typically, these are the fitted (gene) cluster
     representatives of Wilma's output for the training data, obtained
-    from \code{predict.wilma}.} 
+    from \code{predict.wilma}.}
   \item{ylearn}{Numeric vector of length \eqn{n} containing the class labels
     for the training observations. These labels have to be coded by 0 and 1.}
 }
@@ -36,7 +37,7 @@ aggtrees(xlearn, xtest, ylearn)
   logistic regression. \code{aggtrees} fits a default stump (a
   classification tree with two terminal nodes) by \code{rpart} for every
   predictor variable and uses majority voting to determine the final
-  classifier.}
+  classifier.
 }
 \value{Numeric vector of length \eqn{m}, containing the predicted class
   labels for the test observations. The class labels are coded by 0 and
