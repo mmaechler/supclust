@@ -323,7 +323,7 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
   {
     ## Checking the input
     type <- match.arg(type)
-    stopifnot(length(noc) >= 1)
+    stopifnot(length(noc) >= 1, length(object$noc) == 1, object$noc >= 1)
     if (max(noc) > object$noc)
       stop("You cannot predict with more predictors than you have fitted")
 
@@ -398,8 +398,7 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
 
         ## Naming the predictors
         sampnames <- 1:nrow(newdata)
-        clusnames <- character(object$noc)
-        for(i in 1:object$noc)      clusnames[i] <- paste("Predictor", i)
+        clusnames <- paste("Predictor", 1:object$noc)
         dimnames(Xt) <- list(sampnames, c("Intercept", clusnames))
 
         if (length(noc)==1) {
@@ -410,7 +409,7 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
               koeff <- ridge.coef(object$val[,1:noc],object$y,object$lambda)
               Xt[,1:(noc+1)] %*% koeff
             }
-          prvec <- matrix(1 /(1 + exp(- as.vector(eta))), ncol = 1,
+          prvec <- matrix(1 /(1 + exp(- drop(eta))), ncol = 1,
                           dimnames = list(1:nrow(newdata), paste(noc, "Predictors")))
           switch(type,
                  fitted = Xt[,2:ncol(Xt)],
