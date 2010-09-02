@@ -16,11 +16,11 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
 
     ## Check input
     if(!is.matrix(x) || !is.numeric(x))
-        stop("`x' must be a numeric matrix (e.g. gene expressions)")
+        stop("'x' must be a numeric matrix (e.g. gene expressions)")
     n  <- nrow(x)
     if(!is.numeric(y) || length(y) != n || any(y != 0 & y != 1))
-        stop(paste("`y' must be a numeric vector of length n = ", nrow(x),
-                   "with only 0/1 entries"))
+        stop("'y' must be a numeric vector of length n = ", nrow(x),
+             " with only 0/1 entries")
     yvals <- 0:1 # the y-values, aka "class labels"
 
     ## Sign-Flip
@@ -41,7 +41,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
       }
 
     ## Standardisierung der x-Variablen
-    if (standardize == TRUE)
+    if (standardize)
       {
         stndz  <- standardize.genes(x)
         x      <- stndz$x
@@ -59,7 +59,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
     ## Setting up the clinical variables
     if((have.u <- !is.null(u))) { ## with or without "clinical variables"?
         if(!is.matrix(u) || !is.numeric(u))
-            stop("`u' must be a numeric matrix (e.g. clinical variables)")
+            stop("'u' must be a numeric matrix (e.g. clinical variables)")
         m <- ncol(u)
         E <- cbind(x, u)
     } else {
@@ -86,7 +86,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
     valiflag  <- 1 ## for validation of genes via backdeletion, 0 to do without
 
     lSize     <- 2*g*p
-    
+
     ## Aufruf der C-Funktion
     res <- .C("R_clusterer",
               E = 	as.double(E),
@@ -150,7 +150,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
                        labels = c("Cluster", "Clinical"))
     values <- sapply(alle, function(ids) rowMeans(E[, ids, drop=FALSE]))
 
-    ## FIXME: The samp.names should be attached to `values' / kept
+    ## FIXME: The samp.names should be attached to 'values' / kept
     ## -----  where available;  values should get "predictor names" !!
     dnE <- dimnames(E)
     if(is.null(sNames <- dnE[[1]]))
@@ -164,7 +164,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
                 samp.names = sNames, gene.names = dnE[[2]], call = match.call())
     class(out) <- "pelora"
     out
-  } 
+  }
 
 
 ## Returns the fitted values
@@ -172,8 +172,8 @@ fitted.pelora <- function(object, ...)
   {
     ## Fitted values
     out <- object$values
-    if (is.null(vNames <- colnames(out))) 
-      vNames      <- paste("Predictor", 1:object$noc)  
+    if (is.null(vNames <- colnames(out)))
+      vNames      <- paste("Predictor", 1:object$noc)
     dimnames(out) <- list(object$samp.names, vNames)
     out
   }
@@ -206,7 +206,7 @@ print.pelora <- function(x, digits = getOption("digits"), details = FALSE, ...)
       {
 	gic <- x$genes[[i]]
         hic <- x$genes[[i]]
-        if (!is.null(x$signs) & any(x$signs)==0) 
+        if(!is.null(x$signs) && any(x$signs == 0))
           hic[hic>(x$px/2)] <- hic[hic>(x$px/2)]-(x$px/2)
 	if (isClust[i])
           {
@@ -235,7 +235,7 @@ print.pelora <- function(x, digits = getOption("digits"), details = FALSE, ...)
                                 " (flipped)" else "          ")
                           }
                         else
-                          {           
+                          {
                             cat(if (x$signs[gic[j]] == -1)
                                 " (flipped)" else "          ")
                           }
@@ -251,7 +251,7 @@ print.pelora <- function(x, digits = getOption("digits"), details = FALSE, ...)
 	    cat("Predictor ", cI[i], " : Clinical variable ",
                 gic[1]-x$px,
 		if (!is.null(x$gene.names))
-		paste(" named `", x$gene.names[gic[1]], "'"),
+		paste(" named '", x$gene.names[gic[1]], "'"),
 		", final criterion ", cCrit[i], "\n", sep="")
           }
 	if(details) cat("\n")
@@ -280,12 +280,12 @@ plot.pelora <- function(x, main = "2-Dimensional Projection Pelora's output",
 
         if(is.null(ylab))
           ylab <- "Class label"
-      
+
         plot(x$values[,1], x$y, type="n", xlab=xlab, ylab=ylab, main=main, ...)
         text(x$values[,1], x$y, x$y, col = col[1 + x$y])
         return()
       }
-    
+
     if(is.null(xlab))
     xlab <-
       if (x$var.type[1] == "Cluster")
@@ -323,39 +323,29 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
   {
     ## Checking the input
     type <- match.arg(type)
+    stopifnot(length(noc) >= 1)
+    if (max(noc) > object$noc)
+      stop("You cannot predict with more predictors than you have fitted")
 
     ## Return fitted values, probabilities or class labels for the training data
     if (is.null(newdata))
       {
         X   <- cbind(rep(1,length(object$y)),fitted(object))
-        
-        if (length(noc)==1 && noc>object$noc)
-          stop("You cannot predict with more predictors than you have fitted")
-        
-        if (length(noc)==1 && noc==object$noc)
+
+        if (length(noc)==1) {
+          if(noc==object$noc)
           {
             prvec           <- matrix(1/(1+exp(-c(X%*%coef(object)))), ncol = 1)
+          } else { ## length(noc)==1 && noc < object$noc
+            koeff <- ridge.coef(object$val[, 1:noc], object$y, object$lambda)
+            prvec <- matrix(c((1/(1+exp(-(X[, 1:(noc+1)]%*%koeff))))), ncol = 1)
+          }
             dimnames(prvec) <- list(object$samp.names, paste(noc, "Predictors"))
             return(switch(type,
                           fitted = fitted(object),
                           probs  = prvec,
                           class  = (prvec > 0.5)*1))
-          }
-
-        if (length(noc)==1 && noc<object$noc)
-          {
-            koeff <- ridge.coef(object$val[, 1:noc], object$y, object$lambda)
-            prvec <- matrix(c((1/(1+exp(-(X[, 1:(noc+1)]%*%koeff))))), ncol = 1)
-            dimnames(prvec) <- list(object$samp.names, paste(noc, "Predictors"))
-            return(switch(type,
-                          fitted = fitted(object),
-                          probs  = prvec,
-                          class  = (prvec>0.5)*1))
-          }
-
-        if (length(noc)>1 & max(noc)>object$noc)
-          stop("You cannot predict with more predictors than you have fitted")
-        
+        }
         if (length(noc)>1 & max(noc)<=object$noc)
           {
             prmt <- NULL
@@ -371,9 +361,7 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
                           class  = (prmt>0.5)*1))
           }
       }
-
-    ## Returning fitted values, probabilities or class labels for test data
-    else
+    else ## Returning fitted values, probabilities or class labels for 'newdata'
       {
         ## Customizing newdata according to the choice of the flipping method
         if (object$flip=="pm") newdata <- cbind(newdata, -newdata)
@@ -381,11 +369,11 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
         ## Check if new clinical variables are provided too
         if (is.null(newclin) && any(object$var.type=="Clinical"))
           stop("You also need to provide new clinical variables")
-                
+
         ## Check the dimensions of the new data
         if (ncol(newdata)!=object$px)
-          stop(paste("The new data need to have the same number of",
-                     "predictor variables as the training data"))
+          stop("The new data need to have the same number of ",
+               "predictor variables as the training data")
 
         ## Flip the signs of the new data
         if (object$flip=="cor") newdata <- t(t(newdata)*object$signs)
@@ -401,64 +389,50 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
 
         ## Merge expression data and clinical variables (if available)
         if (!is.null(newclin)) newdata <- cbind(newdata, newclin)
-         
+
         ## Determine the fitted values
         Xt <- cbind(rep(1,nrow(newdata)))
-        for (j in 1:object$noc)
-          {
-            Xt <- cbind(Xt, rowMeans(newdata[,object$genes[[j]], drop = FALSE]))
-          }
-        
+        for (j in 1:object$noc) {
+          Xt <- cbind(Xt, rowMeans(newdata[,object$genes[[j]], drop = FALSE]))
+        }
+
         ## Naming the predictors
         sampnames <- 1:nrow(newdata)
         clusnames <- character(object$noc)
         for(i in 1:object$noc)      clusnames[i] <- paste("Predictor", i)
         dimnames(Xt) <- list(sampnames, c("Intercept", clusnames))
 
-        if (length(noc)==1 && noc>object$noc)
-          stop("You cannot predict with more predictors than you have fitted")
-        
-        if (length(noc)==1 && noc==object$noc)
-          {
-            prvec <- matrix(1/(1+exp(-c(Xt%*%coef(object)))), ncol=1)
-            dimnames(prvec) <- list(1:nrow(newdata), paste(noc, "Predictors"))
-            return(switch(type,
-                          fitted = Xt[,2:ncol(Xt)],
-                          probs  = prvec,
-                          class  = (prvec > 0.5)*1))
-          }
-
-        if (length(noc)==1 && noc<object$noc)
-          {
-            koeff <- ridge.coef(object$val[,1:noc],object$y,object$lambda)
-            prvec <- matrix(c((1/(1+exp(-(Xt[,1:(noc+1)]%*%koeff))))), ncol=1)
-            dimnames(prvec) <- list(1:nrow(newdata), paste(noc, "Predictors"))
-            return(switch(type,
-                          fitted = Xt[,2:ncol(Xt)],
-                          probs  = prvec,
-                          class  = (prvec>0.5)*1))
-          }
-
-        if (length(noc)>1 && max(noc)>object$noc)
-          stop("You cannot predict with more predictors than you have fitted")
-        
-        if (length(noc)>1 && max(noc)<=object$noc)
-          {
-            prmt <- NULL
-            for (i in 1:length(noc)) {
-              koeff <- ridge.coef(object$val[,1:(noc[i])],object$y,object$lamb)
-              prvec <- matrix(c((1/(1+exp(-(Xt[,1:(noc[i]+1)]%*%koeff))))),nc=1)
-              dimnames(prvec)<- list(1:nrow(newdata),paste(noc[i],"Predictors"))
-              prmt  <- cbind(prmt, prvec)
+        if (length(noc)==1) {
+          eta <-
+            if(noc == object$noc) {
+              Xt %*% coef(object)
+            } else { ## length(noc) == 1  &&  noc < object$noc
+              koeff <- ridge.coef(object$val[,1:noc],object$y,object$lambda)
+              Xt[,1:(noc+1)] %*% koeff
             }
-            return(switch(type,
-                          fitted = Xt[,2:ncol(Xt)],
-                          probs  = prmt,
-                          class  = (prmt>0.5)*1))
+          prvec <- matrix(1 /(1 + exp(- as.vector(eta))), ncol = 1,
+                          dimnames = list(1:nrow(newdata), paste(noc, "Predictors")))
+          switch(type,
+                 fitted = Xt[,2:ncol(Xt)],
+                 probs  = prvec,
+                 class  = (prvec > 0.5)*1)
+        }
+        else { ##  (length(noc) > 1 && max(noc) <= object$noc)
+          prmt <- NULL
+          for (i in 1:length(noc)) {
+            koeff <- ridge.coef(object$val[,1:(noc[i])],object$y,object$lamb)
+            prvec <- matrix(1/ (1 + exp(-Xt[,1:(noc[i]+1)] %*% koeff)),
+                            ncol = 1,
+                            dimnames = list(1:nrow(newdata),paste(noc[i],"Predictors")))
+            prmt  <- cbind(prmt, prvec)
           }
+          switch(type,
+                 fitted = Xt[,2:ncol(Xt)],
+                 probs  = prmt,
+                 class  = (prmt>0.5)*1)
+        }
       }
-  } 
-
+  }
 
 
 
