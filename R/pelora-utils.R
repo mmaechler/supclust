@@ -14,13 +14,14 @@ ridge.coef <- function(x,y,lambda)
     pnlty   <- diag(apply(X,2,var)*lambda*nrow(X),nr=ncol(X))
     th      <- c(log(mean(y)/(1-mean(y))),rep(0,ncol(X)-1))
 
-    p       <- (1/(1+exp(-(X%*%th))))
-    W       <- diag(drop(p*(1-p)))
-    th      <- solve((t(X)%*%W%*%X)+pnlty, (t(X)%*%(y-p))+(t(X)%*%W%*%X%*%th))
-
-    p       <- (1/(1+exp(-(X%*%th))))
-    W       <- diag(drop(p*(1-p)))
-    th      <- solve((t(X)%*%W%*%X)+pnlty, (t(X)%*%(y-p))+(t(X)%*%W%*%X%*%th))
+    for(j in 1:2) {
+        p  <- 1 / (1+exp(- drop(X %*% th)))
+        W  <- diag(p*(1-p))
+        WX <- W %*% X ## <<-- FIXME: make faster (W is diagonal !)
+        X.WX <- crossprod(X, WX)
+        th <- solve(X.WX + pnlty,
+                    crossprod(X, y-p) + X.WX %*% th)
+    }
     drop(th)
   }
 
