@@ -1,6 +1,8 @@
 
-R : Copyright 2004, The R Foundation for Statistical Computing
-Version 1.9.1  (2004-06-21), ISBN 3-900051-00-3
+R version 2.12.0 Under development (unstable) (2010-08-31 r52857)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -8,15 +10,15 @@ Type 'license()' or 'licence()' for distribution details.
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
-'citation()' on how to cite R in publications.
+'citation()' on how to cite R or R packages in publications.
 
 Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for a HTML browser interface to help.
+'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
 > library(supclust)
-Loading required package: class 
-Loading required package: rpart 
+Loading required package: class
+Loading required package: rpart
 > data(leukemia, package="supclust")
 > 
 > set.seed(724)
@@ -80,7 +82,7 @@ Cluster 1 terminated
 > 
 > ## Running time
 > cat('Time elapsed: ', proc.time() - .proctime00,'\n')
-Time elapsed:  21.56 0 21.61 0 0 
+Time elapsed:  4.619 0.006 4.629 0 0 
 > 
 > ## Checking the output of fit1
 > fit1
@@ -310,22 +312,22 @@ Pelora called with lambda = 0.03125,
 Predictor 1 : Clinical variable 69, final criterion 12.146
 
 Predictor 2 : Cluster with 16 genes, final criterion  6.875
-Entry  1 : Gene  74 (flipped)
-Entry  2 : Gene  61          
-Entry  3 : Gene  26          
-Entry  4 : Gene  83 (flipped)
-Entry  5 : Gene  21 (flipped)
-Entry  6 : Gene  76          
-Entry  7 : Gene 128 (flipped)
-Entry  8 : Gene  86          
-Entry  9 : Gene   5 (flipped)
-Entry 10 : Gene 118 (flipped)
-Entry 11 : Gene  19 (flipped)
-Entry 12 : Gene  42 (flipped)
-Entry 13 : Gene  85 (flipped)
-Entry 14 : Gene 143          
-Entry 15 : Gene 145 (flipped)
-Entry 16 : Gene  37 (flipped)
+Entry  1 : Gene  74          
+Entry  2 : Gene  61 (flipped)
+Entry  3 : Gene  26 (flipped)
+Entry  4 : Gene  83          
+Entry  5 : Gene  21          
+Entry  6 : Gene  76 (flipped)
+Entry  7 : Gene 128          
+Entry  8 : Gene  86 (flipped)
+Entry  9 : Gene   5          
+Entry 10 : Gene 118          
+Entry 11 : Gene  19          
+Entry 12 : Gene  42          
+Entry 13 : Gene  85          
+Entry 14 : Gene 143 (flipped)
+Entry 15 : Gene 145          
+Entry 16 : Gene  37          
 
 Predictor 3 : Cluster with 15 genes, final criterion  5.210
 Entry  1 : Gene  74          
@@ -347,48 +349,48 @@ Entry 15 : Gene   2 (flipped)
 
 > coef(fitW)
   Intercept Predictor 1 Predictor 2 Predictor 3 
- -3.0532627   0.5126493  -5.4154448   6.1338757 
+ -3.0532627   0.5126493   5.4154448   6.1338757 
 > plot(fitW)
 > fitted(fitW)
    Predictor 1 Predictor 2  Predictor 3
-1   -0.4060399 -0.07464815 -0.028169187
-2    0.9430274 -0.06085408 -0.072092784
-3   -0.6145205 -0.07113486 -0.025958022
-4   -1.3627031 -0.20419474 -0.035688525
-5   -1.3734152 -0.16308366 -0.049328858
-6    1.0657803  0.03035889 -0.061855154
-7   -1.3374205 -0.15435873 -0.011033113
-8   -1.3354139 -0.15541127  0.006084757
-9   -0.4067449 -0.07274069 -0.036365641
-10   0.2760965 -0.10639400 -0.091084023
-11  -1.2437437 -0.03430185 -0.003883833
-12  -0.9485866 -0.08602487 -0.008267847
-13  -1.3183164 -0.10202449 -0.100689913
-14   0.5652176 -0.05799033 -0.060489791
-15  -1.3396861 -0.11591672 -0.034943447
-16  -1.3573863 -0.12957623  0.003937245
-17  -0.4053540 -0.10862732 -0.021728478
-18  -1.1799757 -0.09815511 -0.008287326
-19  -1.2076066 -0.13663833 -0.032452774
-20  -0.9575222 -0.07371898 -0.062767649
-21  -1.0457692 -0.10205298 -0.001820048
-22  -1.1115955 -0.14417662 -0.054465167
-23   0.1934126 -0.14646046 -0.048362945
-24  -1.4346453 -0.11915112  0.022833576
-25  -1.2171742 -0.13518107 -0.019291338
-26  -1.2463141 -0.10646528 -0.054424278
-27  -1.2163623 -0.07119922 -0.030853434
-28   0.7410577 -0.59063592  0.316590057
-29   2.8713446 -0.44314986  0.339721985
-30   2.8404211 -0.45458805  0.289022619
-31   2.5610426 -0.50255329  0.355455040
-32   2.8598801 -0.48030548  0.337470075
-33   1.6246713 -0.52645403  0.364288105
-34   1.1566060 -0.57145319  0.326016744
-35   1.3758300 -0.55623830  0.314298968
-36   2.8477323 -0.48881856  0.349464891
-37   2.8649981 -0.39457683  0.321771792
-38   1.2206500 -0.54763894  0.342840734
+1   -0.4060399  0.07464815 -0.028169187
+2    0.9430274  0.06085408 -0.072092784
+3   -0.6145205  0.07113486 -0.025958022
+4   -1.3627031  0.20419474 -0.035688525
+5   -1.3734152  0.16308366 -0.049328858
+6    1.0657803 -0.03035889 -0.061855154
+7   -1.3374205  0.15435873 -0.011033113
+8   -1.3354139  0.15541127  0.006084757
+9   -0.4067449  0.07274069 -0.036365641
+10   0.2760965  0.10639400 -0.091084023
+11  -1.2437437  0.03430185 -0.003883833
+12  -0.9485866  0.08602487 -0.008267847
+13  -1.3183164  0.10202449 -0.100689913
+14   0.5652176  0.05799033 -0.060489791
+15  -1.3396861  0.11591672 -0.034943447
+16  -1.3573863  0.12957623  0.003937245
+17  -0.4053540  0.10862732 -0.021728478
+18  -1.1799757  0.09815511 -0.008287326
+19  -1.2076066  0.13663833 -0.032452774
+20  -0.9575222  0.07371898 -0.062767649
+21  -1.0457692  0.10205298 -0.001820048
+22  -1.1115955  0.14417662 -0.054465167
+23   0.1934126  0.14646046 -0.048362945
+24  -1.4346453  0.11915112  0.022833576
+25  -1.2171742  0.13518107 -0.019291338
+26  -1.2463141  0.10646528 -0.054424278
+27  -1.2163623  0.07119922 -0.030853434
+28   0.7410577  0.59063592  0.316590057
+29   2.8713446  0.44314986  0.339721985
+30   2.8404211  0.45458805  0.289022619
+31   2.5610426  0.50255329  0.355455040
+32   2.8598801  0.48030548  0.337470075
+33   1.6246713  0.52645403  0.364288105
+34   1.1566060  0.57145319  0.326016744
+35   1.3758300  0.55623830  0.314298968
+36   2.8477323  0.48881856  0.349464891
+37   2.8649981  0.39457683  0.321771792
+38   1.2206500  0.54763894  0.342840734
 > 
 > identical(predict(fitW), fitted(fitW))
 [1] TRUE
@@ -475,9 +477,9 @@ Entry 15 : Gene   2 (flipped)
 > 
 > predict(fitW, newdata = xN[,101:250], newc = xN[,1:100])
   Predictor 1 Predictor 2 Predictor 3
-1   0.4595198   0.3708049  -0.2264831
-2   0.3588264   0.0067910   0.1107539
-3  -1.4099869   0.1514969  -0.6695877
+1   0.4595198  -0.3708049  -0.2264831
+2   0.3588264  -0.0067910   0.1107539
+3  -1.4099869  -0.1514969  -0.6695877
 > predict(fitW, newdata = xN[,101:250], newc = xN[,1:100], ty = "pro")
   3 Predictors
 1 0.0019952613
@@ -714,9 +716,9 @@ List of 14
  $ noc       : num 1
  $ px        : int 500
  $ flip      : chr "pm"
- $ var.type  : Factor w/ 2 levels "Cluster","Clini..": 1
+ $ var.type  : Factor w/ 2 levels "Cluster","Clinical": 1
  $ crit      :List of 1
-  ..$ : num [1:16] 12.15 10.66 10.17  9.86  9.66 ...
+  ..$ : num [1:16] 12.15 10.66 10.17 9.86 9.66 ...
  $ signs     : num [1:500] 0 0 0 0 0 0 0 0 0 0 ...
  $ samp.names: chr [1:38] "1" "2" "3" "4" ...
  $ gene.names: chr [1:500] "V1" "V2" "V3" "V4" ...
@@ -1190,5 +1192,5 @@ Entry 18 : Gene   9 (flipped) : Name V9
 > 
 > ## Running time
 > cat('Time elapsed: (total) ', proc.time() - .proctime00,'\n')
-Time elapsed: (total)  22.17 0.06 22.29 0 0 
+Time elapsed: (total)  4.774 0.022 4.813 0 0 
 > 
