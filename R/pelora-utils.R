@@ -1,7 +1,7 @@
 ## The function implementing the sign-flip for Pelora - empirical covariance
 sign.change <- function(x,y)
   {
-    if(is.null(dx <- dim(x))) stop("`x' must be a numeric matrix")
+    if(is.null(dx <- dim(x))) stop("'x' must be a numeric matrix")
     signs <- sign(apply(x, 2, cov, y))
     list(x.new = x * rep(signs, each = dx[1]), signs = signs)
   }
