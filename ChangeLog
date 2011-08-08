@@ -1,11 +1,15 @@
+2011-08-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/*.R, man/score.Rd: get rid of `..' (backward - forward quoting)
+
 2004-08-17  Martin Maechler <maechler@stat.math.ethz.ch>
 
-	* DESCRIPTION (Version): 1.0-2
+	* DESCRIPTION (Version): 1.0-7
 
 	* tests/pelora-ex.Rout.save: update
 	* tests/wilma-ex.Rout.save: dito
 
-	* man/pelora.Rd: and many more: use  
+	* man/pelora.Rd: and many more: use
 		data(leukemia, package = "supclust")
 
 2004-11-16 Marcel Dettling <dettling@jhu.edu>
@@ -20,3 +24,10 @@
 	* DESCRIPTION (Version): 1.0-4
 
 	* R/wilma.R: minor bug fix in line 118 of the code
+
+
+2005-05-18 Marcel Dettling <dettling@jhu.edu>
+
+	* DESCRIPTION (Version: 1.0-5
+
+	* R/wilma.R
