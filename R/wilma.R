@@ -8,17 +8,17 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
         stop("Labels y have to be 0 or 1!")
     n <- length(y)
     if(!is.matrix(x) || !is.numeric(x) || nrow(x) != n)
-        stop("`x' must be a numeric matrix with `n' (= length(y)) observations")
+        stop("'x' must be a numeric matrix with 'n' (= length(y)) observations")
     if((noc <- as.integer(noc)) < 1)
-        stop("`noc' must be a positive integer")
+        stop("'noc' must be a positive integer")
     if((trace <- as.integer(trace)) < 0)
-        stop("`trace' must be integer >= 0 (or logical)")
+        stop("'trace' must be integer >= 0 (or logical)")
     ## C output (Cverb > 0) only for trace >= 2 :
     Cverb <- as.integer(if(trace) Cverb <- trace - 1 else 0)
 
     ## Customizing the problem and sign-flipping
     iy    <- sort.list(y)# i.e., first the 0's, then the 1's
-    io    <- order(iy)   
+    io    <- order(iy)
     y     <- y[iy]
     x     <- x[iy,]
     signs <- NULL
@@ -39,7 +39,7 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
     used <- rep(FALSE, p)
     if(!is.null(genes)) {
         if(!is.list(genes) || length(genes) != noc)
-            stop("starting `genes' must be a list of length `noc' (=", noc,")")
+            stop("starting 'genes' must be a list of length 'noc' (=", noc,")")
         sgl <- unlist(genes)
         ##was sgl <- NULL ; for (i in 1:noc) sgl   <- c(sgl, genes[[i]])
         used[sgl] <- TRUE
@@ -181,7 +181,7 @@ print.wilma <- function(x, ...)
     for (i in 1:noc)
       {
 	gic <- x$clist[[i]]
-        ng <- length(gic) 
+        ng <- length(gic)
         cat("Cluster", cI[i], ": Contains ")
         cat(cG[i], " gene", if(ng != 1)"s", ", final score ", cScore[i],
             ", final margin ", cMargi[i], "\n", sep="")
@@ -192,7 +192,7 @@ print.wilma <- function(x, ...)
 ## The next 3 functions provide a detailed overview about Wilma's clustering
 summary.wilma <- function(object, ...)
   {
-    cat("`Wilma' object: ")
+    cat("'Wilma' object: ")
     printClist(object, ...)
   }
 
@@ -204,9 +204,9 @@ printClist <- function(x, ...)
     ## Author: Martin Maechler, Date: 21 Jun 2003, 21:38
 
     if(is.null(gic <- x$clist))
-        stop("invalid `x' argument")
+        stop("invalid 'x' argument")
     noc <- length(gic)
-    cat("number of clusters `noc' =", noc,"\n")
+    cat("number of clusters 'noc' =", noc,"\n")
     for(i in 1:noc)
         p.1clust(i, gic = gic[[i]],
                  x.mean = x$x.means[[i]], y = x$y, nFwd = x$steps[i])
@@ -251,7 +251,7 @@ fitted.wilma <- function(object, ...)
       {
         out <- cbind(out, (object$x.means[[i]])[,ncol(object$x.means[[i]])])
       }
-    
+
     if (is.null(vNames <- colnames(out))) ## Naming the predictors
         vNames <- paste("Predictor", 1:object$noc)
     dimnames(out) <- list(1:length(object$y), vNames)
@@ -274,7 +274,7 @@ plot.wilma <- function(x, xlab = NULL, ylab = NULL, col = seq(x$yvals),
         text(fvals[,1], x$y, x$y, col = col[1 + x$y])
         return()
       }
-    
+
     ## For 2 clusters and more
     if(is.null(xlab)) xlab <- "Mean Expression of Wilma's Cluster 1"
     if(is.null(ylab)) ylab <- "Mean Expression of Wilma's Cluster 2"
@@ -291,28 +291,28 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
     ## Checking the input
     type       <- match.arg(type)
     classifier <- match.arg(classifier)
-    
+
     ## Return fitted values for the training data
     if (is.null(newdata))
       {
         if (type == "fitted") {
           if (length(noc)==1 && noc>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-                 
+
           if (length(noc)==1 && noc<=object$noc)
           return(fitted(object))
-        
+
           if (length(noc)>1 & max(noc)>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-        
+
           if (length(noc)>1 & max(noc)<=object$noc)
           return(fitted(object)[, noc, drop = FALSE])
         }
 
-        if (type == "class") {   
+        if (type == "class") {
           if (length(noc)==1 && noc>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-                 
+
           if (length(noc)==1 && noc<=object$noc)
             {
               xlearn <- (fitted(object))[,1:noc, drop = FALSE]
@@ -326,7 +326,7 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
 
           if (length(noc)>1 & max(noc)>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-        
+
           if (length(noc)>1 && max(noc)<=object$noc)
             {
               clmt <- NULL
@@ -345,7 +345,7 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
                 }
               return(clmt)
             }
-        }  
+        }
       }
 
     ## Returning fitted values or class labels for test data
@@ -363,7 +363,7 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
           {
             newdata <- t(t(newdata)*object$signs)
           }
-        
+
         ## Fitted values for the new data
         xtest <- NULL
         for (j in 1:object$noc)
@@ -382,21 +382,21 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
         if (type == "fitted") {
           if (length(noc)==1 && noc>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-                 
+
           if (length(noc)==1 && noc<=object$noc)
           return(xtest[,1:noc, drop = FALSE])
-                  
+
           if (length(noc)>1 & max(noc)>object$noc)
           stop("You cannot predict with more predictors than you have fitted")
-        
+
           if (length(noc)>1 & max(noc)<=object$noc)
           return(xtest[,noc, drop = FALSE])
-        }                 
-                 
+        }
+
         ## Do 0/1-classification
         if (length(noc)==1 && noc>object$noc)
             stop("You cannot predict with more predictors than you have fitted")
-        
+
         if (length(noc)==1 && noc==object$noc)
           {
             xlearn <- fitted(object)
@@ -420,7 +420,7 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
 
         if (length(noc)>1 && max(noc)>object$noc)
             stop("You cannot predict with more predictors than you have fitted")
-          
+
         if (length(noc)>1 && max(noc)<=object$noc)
           {
             clmt <- NULL
@@ -440,6 +440,6 @@ predict.wilma <- function(object, newdata = NULL, type = c("fitted", "class"),
             return(clmt)
           }
       }
-  } 
+  }
 
 
