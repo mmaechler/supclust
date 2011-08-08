@@ -15,7 +15,7 @@ margin(x, resp)
 \arguments{
   \item{x}{Numeric vector of length \eqn{n}, for example containing gene
     or cluster expression values of \eqn{n} different cases.}
-  \item{resp}{Numeric vector of length \eqn{n} containing the ``binary''
+  \item{resp}{Numeric vector of length \eqn{n} containing the \dQuote{binary}
     class labels of the cases.  Must be coded by \code{0} and \code{1}.}
 }
 \value{A numeric value, the \code{margin}. Positive \code{margin}
@@ -32,7 +32,7 @@ margin(x, resp)
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
 \seealso{\code{\link{wilma}}, \code{\link{score}} is the second statistic
-  that is used there. 
+  that is used there.
 }
 \examples{
 data(leukemia, package="supclust")
