@@ -1,0 +1,9 @@
+1) Use  model.matrix() / model.frame to create 'x' in the examples
+
+2) Consider using *sparse* model matrices (for 'x') -- in the functions!
+
+3) -- apply supclust() to
+   library(caret)
+   data(segmentationData)
+  and compare with the prediction there,
+  --> ~/R/Meetings-Kurse-etc/2011-Warwick/Tutorials/Kuhn_caret/user_2011_caret.r
