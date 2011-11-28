@@ -1,6 +1,6 @@
 
-R version 2.12.0 Under development (unstable) (2010-08-31 r52857)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.14.0 Patched (2011-11-25 r57751)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -17,8 +17,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(supclust)
-Loading required package: class
-Loading required package: rpart
 > data(leukemia, package="supclust")
 > 
 > set.seed(724)
@@ -82,7 +80,7 @@ Cluster 1 terminated
 > 
 > ## Running time
 > cat('Time elapsed: ', proc.time() - .proctime00,'\n')
-Time elapsed:  4.619 0.006 4.629 0 0 
+Time elapsed:  5.348 0.004 5.407 0 0 
 > 
 > ## Checking the output of fit1
 > fit1
@@ -284,9 +282,9 @@ Entry 14 : Gene 198
 3  -0.1820159 -0.25441379  -0.0938568
 > predict(fit1, newdata = xN, type = "pro")
   3 Predictors
-1    0.8683710
-2    0.6659045
-3    0.0771895
+1   0.86837102
+2   0.66590451
+3   0.07718951
 > predict(fit1, newdata = xN, type = "cla")
   3 Predictors
 1            1
@@ -691,9 +689,9 @@ Entry 14 : Gene 198           : Name V198
 3  -0.1820159 -0.25441379  -0.0938568
 > predict(fit3, newdata = xN, type = "pro")
   3 Predictors
-1    0.8683710
-2    0.6659045
-3    0.0771895
+1   0.86837102
+2   0.66590451
+3   0.07718951
 > predict(fit3, newdata = xN, type = "cla")
   3 Predictors
 1            1
@@ -1192,5 +1190,5 @@ Entry 18 : Gene   9 (flipped) : Name V9
 > 
 > ## Running time
 > cat('Time elapsed: (total) ', proc.time() - .proctime00,'\n')
-Time elapsed: (total)  4.774 0.022 4.813 0 0 
+Time elapsed: (total)  5.508 0.012 5.577 0 0 
 > 
