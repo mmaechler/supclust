@@ -88,7 +88,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
     lSize     <- 2*g*p
 
     ## Aufruf der C-Funktion
-    res <- .C("R_clusterer",
+    res <- .C(R_clusterer,
               E = 	as.double(E),
               X = 	as.double(X),
               W = 	as.double(W),
@@ -109,8 +109,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
               ## Output:
               genliste = 	integer(lSize),
               kriterium = 	double (lSize),
-              DUP = FALSE,
-              PACKAGE = "supclust")[c("genliste", "kriterium")]
+              DUP = FALSE)[c("genliste", "kriterium")]
 
     ## Auswertung, bilden der Liste mit Genen und Mittelwerten
     i         <- 1
