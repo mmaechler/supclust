@@ -1,0 +1,27 @@
+useDynLib(supclust,
+          R_clusterer, R_multicluster, R_margin, R_score)
+
+importFrom("class", knn)
+importFrom("rpart", rpart)
+
+export(pelora, wilma,
+       nnr, dlda, logreg, aggtrees
+       , margin, score
+       , sign.change, sign.flip
+       , standardize.genes
+       )
+
+###---- Methods ---- all documented but not exported
+
+S3method(coef, pelora)
+S3method(fitted, pelora)
+S3method(plot, pelora)
+S3method(predict, pelora)
+S3method(print, pelora)
+S3method(summary, pelora)
+
+S3method(fitted, wilma)
+S3method(plot, wilma)
+S3method(predict, wilma)
+S3method(print, wilma)
+S3method(summary, wilma)
