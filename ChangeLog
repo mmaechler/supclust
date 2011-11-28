@@ -5,6 +5,8 @@
 	* DESCRIPTION (Version): 1.0-7; Imports: class, rpart (instead of
 	"suggests" cheat)
 
+	* R/*.R: no longer need PACKAGE= (and strings) in .C() calls
+
 	* R/zzz.R: minimal; dynlib now via NAMESPACE
 
 2011-08-08  Martin Maechler  <maechler@stat.math.ethz.ch>
