@@ -70,7 +70,7 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
                     cat("entry gic[]:", gic, "\n")
             }
 
-            res <- .C("R_multicluster",
+            res <- .C(R_multicluster,
                       as.double(x), as.integer(y),# 2
                       as.integer(n), as.integer(n1), as.integer(n2),# 5
                       as.integer(p),# 6
@@ -81,8 +81,7 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
                       scores = integer(size+p),
                       margins=  double(size+p),
                       as.logical(once.per.clust),
-                      Cverb,
-                      PACKAGE="supclust")[
+                      Cverb)[
                       c("used", "glsize", "gic", "scores", "margins")]
 
             if(trace) {
