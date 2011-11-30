@@ -1,6 +1,6 @@
 
-R version 2.12.0 Under development (unstable) (2010-09-01 r52862)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R Under development (unstable) (2011-11-29 r57769)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: i686-pc-linux-gnu (32-bit)
 
@@ -18,8 +18,6 @@ Type 'q()' to quit R.
 
 > ## Loading the data
 > library(supclust)
-Loading required package: class
-Loading required package: rpart
 > data(leukemia, package="supclust")
 > 
 > ## A subsample that gave seg.faults earlier:
@@ -155,6 +153,8 @@ Gen:   211  Score:   0  Margin:  0.446
 Gen:    79  Score:   0  Margin:  0.528
 Gen:   104  Score:   0  Margin:  0.587
 > fit3  <- wilma(leukemia.x, leukemia.y, noc = 4, once.per.clust = TRUE)
+> ## quite *different* results on 32-bit and 64-bit Linux (Fedora 15, 2011):
+> ## (why?)
 > fit4  <- wilma(leukemia.x, leukemia.y, noc = 5, flip= FALSE, trace = 1)
 
 
@@ -294,7 +294,7 @@ Gen:   248  Score:   0  Margin:  0.353
 > 
 > ## Running time
 > cat('Time elapsed: ',proc.time() - .proctime00,'\n')
-Time elapsed:  0.222 0.017 0.239 0 0 
+Time elapsed:  0.109 0.005 0.116 0 0 
 > 
 > ## Checking the output of fit1
 > fit1
@@ -303,7 +303,7 @@ Wilma called to fit 1 cluster
 
 Cluster 1 : Contains 5 genes, final score 0, final margin 1.04
 > summary(fit1)
-`Wilma' object: number of clusters `noc' = 1 
+'Wilma' object: number of clusters 'noc' = 1 
 
 Final Cluster 1 
 ----------------
@@ -424,7 +424,7 @@ Cluster 1 : Contains  5 genes, final score 0, final margin 1.04
 Cluster 2 : Contains 13 genes, final score 0, final margin 0.73
 Cluster 3 : Contains  7 genes, final score 0, final margin 0.59
 > summary(fit2)
-`Wilma' object: number of clusters `noc' = 3 
+'Wilma' object: number of clusters 'noc' = 3 
 
 Final Cluster 1 
 ----------------
@@ -579,7 +579,7 @@ Cluster 2 : Contains 7 genes, final score 0, final margin 0.74
 Cluster 3 : Contains 6 genes, final score 0, final margin 0.61
 Cluster 4 : Contains 6 genes, final score 0, final margin 0.50
 > summary(fit3)
-`Wilma' object: number of clusters `noc' = 4 
+'Wilma' object: number of clusters 'noc' = 4 
 
 Final Cluster 1 
 ----------------
@@ -727,7 +727,7 @@ Gen:    49  Score:   0  Margin:  0.495
 > predict(fit3, newdata = xN, type = "cla", classifier = "aggtrees")
 [1] 0 0 0
 > 
-> ## Checking the output of fit4
+> ## Checking the output of fit4  (different on differen platforms!)
 > fit4
 
 Wilma called to fit 5 clusters
@@ -738,7 +738,7 @@ Cluster 3 : Contains 13 genes, final score 0, final margin 0.69
 Cluster 4 : Contains  4 genes, final score 0, final margin 0.70
 Cluster 5 : Contains  4 genes, final score 0, final margin 0.35
 > summary(fit4)
-`Wilma' object: number of clusters `noc' = 5 
+'Wilma' object: number of clusters 'noc' = 5 
 
 Final Cluster 1 
 ----------------
@@ -904,5 +904,5 @@ Gen:   248  Score:   0  Margin:  0.353
 > 
 > ## Running time
 > cat('Time elapsed: (total) ', proc.time() - .proctime00,'\n')
-Time elapsed: (total)  0.586 0.028 0.619 0 0 
+Time elapsed: (total)  0.394 0.014 0.423 0 0 
 > 
