@@ -4,10 +4,11 @@ Version:	1.0-7
 Date:		2011-11-28
 Description:	Methodology for supervised grouping aka "clustering" of
    potentially many predictor variables, such as genes etc.
-Imports:	rpart, class
-Author:		Marcel Dettling <marcel.dettling@zhaw.ch> and Martin Maechler
-Maintainer:	Martin Maechler <maechler@stat.math.ethz.ch>
-URL:		http://www.stat.math.ethz.ch/~dettling/
+Depends: R (>= 2.5.0)
+Imports: rpart, class
+Author: Marcel Dettling <marcel.dettling@zhaw.ch> and Martin Maechler
+Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
+URL: http://www.stat.math.ethz.ch/~dettling/
 Encoding: UTF-8
 License: GPL-2
 
