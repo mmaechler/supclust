@@ -11,7 +11,7 @@ export(pelora, wilma,
        , standardize.genes
        )
 
-###---- Methods ---- all documented but not exported
+###---- Methods ---- all documented, but hidden as functions <fun>.<class>
 
 S3method(coef, pelora)
 S3method(fitted, pelora)
