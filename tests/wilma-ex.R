@@ -16,6 +16,8 @@ xN <- matrix(rnorm(750), 3, 250)
 fit1  <- wilma(leukemia.x, leukemia.y, noc = 1, trace = 2)
 fit2  <- wilma(leukemia.x, leukemia.y, noc = 3, trace = 1)
 fit3  <- wilma(leukemia.x, leukemia.y, noc = 4, once.per.clust = TRUE)
+## quite *different* results on 32-bit and 64-bit Linux (Fedora 15, 2011):
+## (why?)
 fit4  <- wilma(leukemia.x, leukemia.y, noc = 5, flip= FALSE, trace = 1)
 
 ## Running time
@@ -69,7 +71,7 @@ predict(fit3, newdata = xN, type = "cla", classifier = "dlda", noc = c(1,3))
 predict(fit3, newdata = xN, type = "cla", classifier = "logreg")
 predict(fit3, newdata = xN, type = "cla", classifier = "aggtrees")
 
-## Checking the output of fit4
+## Checking the output of fit4  (different on differen platforms!)
 fit4
 summary(fit4)
 plot(fit4)
