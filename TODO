@@ -7,3 +7,7 @@
    data(segmentationData)
   and compare with the prediction there,
   --> ~/R/Meetings-Kurse-etc/2011-Warwick/Tutorials/Kuhn_caret/user_2011_caret.r
+
+4) Note: tests/wilma-ex.R  fit4 -- gives quite(?) different results for
+   	 32 bit and 64 bit.
+   What does that mean?  [overparametrized - "random" results ?]
