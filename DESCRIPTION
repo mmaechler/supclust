@@ -1,7 +1,7 @@
 Package:	supclust
 Title:		Supervised Clustering of Predictor Variables such as Genes
 Version:	1.0-7
-Date:		2011-..-..
+Date:		2011-11-28
 Description:	Methodology for supervised grouping aka "clustering" of
    potentially many predictor variables, such as genes etc.
 Imports:	rpart, class
