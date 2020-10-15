@@ -1,5 +1,7 @@
-useDynLib(supclust,
-          R_clusterer, R_multicluster, R_margin, R_score)
+useDynLib(supclust, .registration = TRUE)
+
+importFrom("graphics", text)
+importFrom("stats", binomial, coef, cov, fitted, glm, predict, sd, var)
 
 importFrom("class", knn)
 importFrom("rpart", rpart)

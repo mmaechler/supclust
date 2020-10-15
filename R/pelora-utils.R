@@ -11,7 +11,7 @@ sign.change <- function(x,y)
 ridge.coef <- function(x,y,lambda)
   {
     X       <- cbind(rep(1,length(y)),x)
-    pnlty   <- diag(apply(X,2,var)*lambda*nrow(X),nr=ncol(X))
+    pnlty   <- diag(apply(X,2,var)*lambda*nrow(X), nrow=ncol(X))
     th      <- c(log(mean(y)/(1-mean(y))),rep(0,ncol(X)-1))
 
     for(j in 1:2) {

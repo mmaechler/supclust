@@ -45,19 +45,19 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
       {
         stndz  <- standardize.genes(x)
         x      <- stndz$x
-        means  <- stndz$means
+        ## means  <- stndz$means
         sdevs  <- stndz$sdevs
         if (any(sdevs==0))
           stop ("There are predictor variables with st. dev. = 0")
       }
     else
       {
-        means <- NULL
+        ## means <- NULL
         sdevs <- NULL
       }
 
     ## Setting up the clinical variables
-    if((have.u <- !is.null(u))) { ## with or without "clinical variables"?
+    if(!is.null(u)) { ## 'have.u': with or without "clinical variables"?
         if(!is.matrix(u) || !is.numeric(u))
             stop("'u' must be a numeric matrix (e.g. clinical variables)")
         m <- ncol(u)
@@ -88,6 +88,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
     lSize     <- 2*g*p
 
     ## Aufruf der C-Funktion
+    ## (worked faster with DUP=FALSE; TODO use .Call()!)
     res <- .C(R_clusterer,
               E = 	as.double(E),
               X = 	as.double(X),
@@ -108,8 +109,8 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
               traceflag= as.integer(trace),
               ## Output:
               genliste = 	integer(lSize),
-              kriterium = 	double (lSize),
-              DUP = FALSE)[c("genliste", "kriterium")]
+              kriterium = 	double (lSize)
+              )[c("genliste", "kriterium")]
 
     ## Auswertung, bilden der Liste mit Genen und Mittelwerten
     i         <- 1
@@ -142,7 +143,7 @@ pelora <- function(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
             i <- i+1
         }
     }
-    noclu <- length(alle)
+    ## noclu <- length(alle)
 
     var.type <- factor(sapply(alle, function(j) any(j > px)),
                        levels = c(FALSE, TRUE),
@@ -326,9 +327,9 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
     if (max(noc) > object$noc)
       stop("You cannot predict with more predictors than you have fitted")
 
-    ## Return fitted values, probabilities or class labels for the training data
-    if (is.null(newdata))
-      {
+
+    if (is.null(newdata)) {
+        ## Return fitted values, probabilities or class labels for the training data
         X   <- cbind(rep(1,length(object$y)),fitted(object))
 
         if (length(noc)==1) {
@@ -340,28 +341,30 @@ predict.pelora <- function(object, newdata = NULL, newclin = NULL,
             prvec <- matrix(c((1/(1+exp(-(X[, 1:(noc+1)]%*%koeff))))), ncol = 1)
           }
             dimnames(prvec) <- list(object$samp.names, paste(noc, "Predictors"))
-            return(switch(type,
-                          fitted = fitted(object),
-                          probs  = prvec,
-                          class  = (prvec > 0.5)*1))
-        }
-        if (length(noc)>1 & max(noc)<=object$noc)
-          {
-            prmt <- NULL
+          ## return
+          switch(type,
+                 fitted = fitted(object),
+                 probs  = prvec,
+                 class  = (prvec > 0.5)*1)
+
+        } else { ## (length(noc) > 1 && max(noc) <= object$noc)  {already checked}
+            prmt <- NULL ## << FIXME
             for (i in 1:length(noc)) {
               koeff <- ridge.coef(object$val[,1:(noc[i])],object$y,object$lamb)
-              prvec <- matrix(c((1/(1+exp(-(X[,1:(noc[i]+1)]%*%koeff))))),nc=1)
-              dimnames(prvec) <- list(object$samp.n,paste(noc[i],"Predictors"))
+              ## TODO prmt[,i] <-
+              prvec <- matrix(c(1/(1+exp(-(X[,1:(noc[i]+1)]%*%koeff)))), ncol=1,
+                              dimnames = list(object$samp.n,paste(noc[i], "Predictors")))
               prmt  <- cbind(prmt, prvec)
             }
-            return(switch(type,
-                          fitted = fitted(object)[, noc, drop = FALSE],
-                          probs  = prmt,
-                          class  = (prmt>0.5)*1))
-          }
-      }
-    else ## Returning fitted values, probabilities or class labels for 'newdata'
-      {
+            ## return
+            switch(type,
+                   fitted = fitted(object)[, noc, drop = FALSE],
+                   probs  = prmt,
+                   class  = (prmt>0.5)*1)
+        }
+    } else {
+        ## Returning fitted values, probabilities or class labels for 'newdata'
+
         ## Customizing newdata according to the choice of the flipping method
         if (object$flip=="pm") newdata <- cbind(newdata, -newdata)
 

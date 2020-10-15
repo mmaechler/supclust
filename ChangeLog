@@ -1,3 +1,13 @@
+2020-10-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-0;
+	    URL: now on github (with all 17 years of history!)
+
+	* src/init.c: new, for `.registration=TRUE` in
+	* NAMESPACE: also import from `stats`, `graphics`
+	* man/*.Rd: references concentrated & updated with \doi{}, \url{}s fixed;
+	* R/*.R: cosmetic, getting rid of all NOTEs
+
 2011-11-28  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* NAMESPACE: newly added; Note: S3 methods now "invisible"

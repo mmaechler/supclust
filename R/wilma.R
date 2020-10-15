@@ -13,8 +13,10 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
         stop("'noc' must be a positive integer")
     if((trace <- as.integer(trace)) < 0)
         stop("'trace' must be integer >= 0 (or logical)")
+    if(is.na(once.per.clust <- as.logical(once.per.clust)))
+        stop("'once.per.clust' must be TRUE or FALSE")
     ## C output (Cverb > 0) only for trace >= 2 :
-    Cverb <- as.integer(if(trace) Cverb <- trace - 1 else 0)
+    Cverb <- if(trace) trace - 1L else 0L
 
     ## Customizing the problem and sign-flipping
     iy    <- sort.list(y)# i.e., first the 0's, then the 1's
@@ -80,7 +82,7 @@ wilma <- function(x, y, noc, genes = NULL, flip = TRUE,
                       gic    = c(as.integer(gic), integer(p)),
                       scores = integer(size+p),
                       margins=  double(size+p),
-                      as.logical(once.per.clust),
+                      as.integer(once.per.clust), # 13
                       Cverb)[
                       c("used", "glsize", "gic", "scores", "margins")]
 
@@ -231,11 +233,11 @@ p.1clust <- function(i, gic, x.mean, y, nFwd)
 .p.1gen <- function(j, id, s, m, digits = 3)
   {
     cat("Gen",
-        if(is.null(j)) "" else paste("[", j, "]",if(j <= 9)" ",sep=""),
-        ":", formatC(id, wid=6),
-        "  Score:", formatC(s, wid=4),
+        if(is.null(j)) "" else paste0("[", j, "]",if(j <= 9)" "),
+        ":", formatC(id, width=6),
+        "  Score:", formatC(s, width=4),
         "  Margin:",
-        formatC(format(c(round(m, digits=digits),0.735))[1], wid=7, dig=3),
+        formatC(format(c(round(m, digits=digits),0.735))[1], width=7, digits=3),
         "\n", sep="")
   }
 
