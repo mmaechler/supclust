@@ -15,9 +15,6 @@
  o	much clean up
  */
 
-/*  <R.h> ist nötig für R_alloc und die Sortieralgorithmen */
-#include <R.h>
-
 /*  Weitere Hilfsfunktionen aus R */
 #include <Rmath.h>
 
@@ -25,6 +22,9 @@
 #include <R_ext/BLAS.h>
 /* Lapack : */
 #include <R_ext/Lapack.h>
+
+#include "supclust.h"
+
 
 /* NOTA BENE: do  NOT use global variables !
  * --------- */
