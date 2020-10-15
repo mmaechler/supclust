@@ -42,16 +42,8 @@ aggtrees(xlearn, xtest, ylearn)
 \value{Numeric vector of length \eqn{m}, containing the predicted class
   labels for the test observations. The class labels are coded by 0 and
   1.}
-\references{
-  Marcel Dettling (2002)
-  \emph{Supervised Clustering of Genes}, see
-  \url{http://stat.ethz.ch/~dettling/supercluster.html}
-
-  Marcel Dettling and Peter Bühlmann (2002).
-  Supervised Clustering of Genes.
-  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15.
-}
-\author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
+\references{see those in \code{\link{wilma}}.}% maintain in *one* place
+\author{Marcel Dettling}% no longer \email{dettling@stat.math.ethz.ch}}
 \seealso{\code{\link{wilma}}}
 \examples{
 ## Generating random learning data: 20 observations and 10 variables (clusters)

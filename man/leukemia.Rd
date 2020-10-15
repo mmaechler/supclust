@@ -1,10 +1,10 @@
 \name{leukemia}
+\title{A part of the Golub's famous AML/ALL-leukemia dataset}
 \docType{data}
 \alias{leukemia}
 \alias{leukemia.x}
 \alias{leukemia.y}
 \alias{leukemia.z}
-\title{A part of the Golub's famous AML/ALL-leukemia dataset}
 \description{Part of the training set of the famous AML/ALL-leukemia
   dataset from the Whitehead Institute.  It has been reduced to 250
   genes, about half of which are very informative for classification,
@@ -14,11 +14,14 @@
 data(leukemia)
 }
 \format{Contains three \R-objects:
-  The expression matrix \code{leukemia.x},
-  the associated binary response variable \code{leukemia.y},
-  and the associated 3-class response variable \code{leukemia.z}.
+  The expression (38 x 250) matrix \code{leukemia.x},
+  the associated binary (\code{0,1}) response variable \code{leukemia.y},
+  and the associated 3-class response variable \code{leukemia.z} with
+  values in \code{0,1,2}.
 }
-\source{\url{http://www.genome.wi.mit.edu/MPR/}}
+\source{originally at \code{http://www.genome.wi.mit.edu/MPR/}, (which is
+  not a valid URL any more).
+}
 \references{
   First published in\cr
   Golub et al. (1999)

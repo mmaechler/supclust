@@ -48,17 +48,9 @@
   each containing fitted values for \code{noc} clusters, or class label
   predictions with \code{noc} clusters, is returned.
 }
-\references{
-  Marcel Dettling (2002)
-  \emph{Supervised Clustering of Genes}, see
-  \url{http://stat.ethz.ch/~dettling/supercluster.html}
-
-  Marcel Dettling and Peter Bühlmann (2002).
-  Supervised Clustering of Genes.
-  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15.
-}
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{wilma}} and for the four classifiers,
+\seealso{\code{\link{wilma}} also for \emph{references}, and for the four
+  classifiers
   \code{\link{nnr}}, \code{\link{dlda}}, \code{\link{logreg}},
   \code{\link{aggtrees}}.}
 \examples{

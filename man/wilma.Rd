@@ -15,10 +15,10 @@ wilma(x, y, noc, genes = NULL, flip = TRUE, once.per.clust = FALSE, trace = 0)
   \item{y}{Numeric vector of length \eqn{n} containing the class labels
     of the individuals. These labels have to be coded by 0 and 1.}
   \item{noc}{Integer, the number of clusters that should be searched for
-    on the data.} 
+    on the data.}
   \item{genes}{Defaults to \code{NULL}. An optional list (of length
     \code{noc}) of vectors containing the indices (column numbers) of
-    the previously known initial clusters.} 
+    the previously known initial clusters.}
   \item{flip}{Logical, defaults to \code{TRUE}. Is indicating whether
     the clustering should be done with or without sign-flipping.}
   \item{once.per.clust}{Logical, defaults to \code{FALSE}. Is indicating
@@ -44,7 +44,7 @@ wilma(x, y, noc, genes = NULL, flip = TRUE, once.per.clust = FALSE, trace = 0)
   An object of class "wilma" is a list containing:
   \item{clist}{A list of length \code{noc}, containing integer vectors
     consisting of the indices (column numbers) of the variables (genes)
-    that have been clustered.} 
+    that have been clustered.}
   \item{steps}{Numerical vector of length \code{noc}, showing the number
     of forward/backward cycles in the fitting process of each cluster.}
   \item{y}{Numeric vector of length \eqn{n} containing the class labels
@@ -60,15 +60,17 @@ wilma(x, y, noc, genes = NULL, flip = TRUE, once.per.clust = FALSE, trace = 0)
 \references{
   Marcel Dettling (2002)
   \emph{Supervised Clustering of Genes}, see
-  \url{http://stat.ethz.ch/~dettling/supercluster.html}
+  \url{https://stat.ethz.ch/~dettling/supercluster.html}
 
   Marcel Dettling and Peter Bühlmann (2002).
   Supervised Clustering of Genes.
-  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15.
+  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15,
+  \doi{10.1186/gb-2002-3-12-research0069} .
 
   Marcel Dettling and Peter Bühlmann (2004).
   Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}.
+  \emph{Journal of Multivariate Analysis} \bold{90}, 106--131,
+  \doi{10.1016/j.jmva.2004.02.012} .
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
 \seealso{\code{\link{score}}, \code{\link{margin}}, and for a newer

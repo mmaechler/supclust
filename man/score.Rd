@@ -21,18 +21,9 @@ score(x, resp)
   in class 0 and class 1. Values near the minimal or maximal
   \code{score} indicate good separation, whereas intermediate
   \code{score} means poor separation.}
-\references{
-  Marcel Dettling (2002)
-  \emph{Supervised Clustering of Genes}, see
-  \url{http://stat.ethz.ch/~dettling/supercluster.html}
-
-  Marcel Dettling and Peter Bühlmann (2002).
-  Supervised Clustering of Genes.
-  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15.
-}
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{wilma}}, \code{\link{margin}} is the second statistic
-  that is used there.
+\seealso{\code{\link{wilma}} also for \emph{references};
+  \code{\link{margin}} is the second statistic that is used there.
 }
 \examples{
 data(leukemia, package="supclust")

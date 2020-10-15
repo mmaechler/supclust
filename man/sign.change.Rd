@@ -27,17 +27,9 @@ sign.change(x, y)
     predictor variable indicates whether it was sign-flipped (coded by
     -1) or not (coded by +1).}
 }
-\references{
-  Marcel Dettling (2003)
-  \emph{Finding Groups of Predictive Genes from Microarray Data}, see
-  \url{http://stat.ethz.ch/~dettling/supervised.html}
-
-  Marcel Dettling and Peter Bühlmann (2004).
-  Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}.
-}
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{pelora}}, as well as for older methodology,
+\seealso{\code{\link{pelora}} also for \emph{references},
+  as well as for older methodology,
   \code{\link{wilma}} and \code{\link{sign.flip}}.}
 \examples{
 data(leukemia, package="supclust")

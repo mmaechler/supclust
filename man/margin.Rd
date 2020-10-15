@@ -21,16 +21,8 @@ margin(x, resp)
 \value{A numeric value, the \code{margin}. Positive \code{margin}
   indicates perfect separation of the response classes, whereas negative
   \code{margin} means imperfect separation.}
-\references{
-  Marcel Dettling (2002)
-  \emph{Supervised Clustering of Genes}, see
-  \url{http://stat.ethz.ch/~dettling/supercluster.html}
-
-  Marcel Dettling and Peter Bühlmann (2002).
-  Supervised Clustering of Genes.
-  \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15.
-}
-\author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
+\references{see those in \code{\link{wilma}}.}% maintain in *one* place
+\author{Marcel Dettling}
 \seealso{\code{\link{wilma}}, \code{\link{score}} is the second statistic
   that is used there.
 }

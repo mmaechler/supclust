@@ -21,15 +21,6 @@ standardize.genes(exmat)
   \item{sdevs}{Numeric vector of length \eqn{p}, containing the initial
     standard deviation of each column (gene) of the \code{x}-matrix.}
 }
-\references{
-  Marcel Dettling (2003)
-  \emph{Finding Groups of Predictive Genes from Microarray Data}, see
-  \url{http://stat.ethz.ch/~dettling/supervised.html}
-
-  Marcel Dettling and Peter Bühlmann (2004).
-  Finding Predictive Gene Groups from Microarray Data.
-  To appear in the \emph{Journal of Multivariate Analysis}.
-}
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{pelora}}}
+\seealso{\code{\link{pelora}} also for the \emph{references}.}
 \keyword{manip}
