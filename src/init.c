@@ -3,7 +3,7 @@
 
 #include "supclust.h"
 
-#define CDEF(name)  {#name, (DL_FUNC) &name, sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
+#define CDEF(name)  {#name, (DL_FUNC) &name, sizeof(name ## _typ)/sizeof(name ## _typ[0]), name ##_typ}
 #define CALLDEF(name, n)  {#name, (DL_FUNC) &name, n}
 
 // pelora.c --------------------------------------------
