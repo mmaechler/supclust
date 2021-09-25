@@ -15,13 +15,20 @@
  o	much clean up
  */
 
-/*  Weitere Hilfsfunktionen aus R */
-#include <Rmath.h>
-
+#ifndef  USE_FC_LEN_T
+# define USE_FC_LEN_T
+#endif
+#include <Rconfig.h>
 /* BLAS (incl. BLAS 3) -- */
 #include <R_ext/BLAS.h>
 /* Lapack : */
 #include <R_ext/Lapack.h>
+#ifndef FCONE
+# define FCONE
+#endif
+
+/*  Weitere Hilfsfunktionen aus R */
+#include <Rmath.h>
 
 #include "supclust.h"
 
@@ -72,8 +79,8 @@ void txwx (double *W, double *X, double *tXWX, double *WX, int m, int n)
   char  *trW = "N", *trX  = "N", *trtX = "T";
 
   /*  Matrixmultiplikation, Ergebnis wird in C gespeichert */
-  F77_CALL(dgemm)(trW, trX, &m, &n, &m, &one, W, &m, X, &m, &zero, WX, &m);
-  F77_CALL(dgemm)(trtX,trW, &n, &n, &m, &one, X, &m, WX,&m, &zero, tXWX,&n);
+  F77_CALL(dgemm)(trW, trX, &m, &n, &m, &one, W, &m, X, &m, &zero, WX,  &m FCONE FCONE);
+  F77_CALL(dgemm)(trtX,trW, &n, &n, &m, &one, X, &m, WX,&m, &zero, tXWX,&n FCONE FCONE);
 }
 
 /*  Lösen eines Gleichungssystems */
@@ -96,7 +103,6 @@ double loss(double *prob, double *y, double *yminp, int n, int crit)
   static double one  =  1.;
   static double min1 = -1.;
   double gof;
-  int     i;
 
   /*  Computing the goodness of fit measure */
   if (crit==1) {
@@ -108,7 +114,7 @@ double loss(double *prob, double *y, double *yminp, int n, int crit)
   }
   else {
       gof = 0.;
-      for (i=0; i < n; i++)
+      for (int i=0; i < n; i++)
 	  gof += -y[i]*log(prob[i]) - (1-y[i])*log1p(-prob[i]);
   }
   /*  Returning the goodness of fit measure */
@@ -162,10 +168,10 @@ void ridgecoef(double *X, double *W, double *P, double *WX, double *XWX,
   F77_CALL(daxpy)(&n, &one, y, &nrv, yminp, &nrv);
 
   /*  Computation of: aux <- XWX*theta */
-  F77_CALL(dgemv)(notrans,&p,&p,&one, XWX, &p, theta, &nrv, &zero, aux, &nrv);
+  F77_CALL(dgemv)(notrans,&p,&p,&one, XWX, &p, theta, &nrv, &zero, aux, &nrv FCONE);
 
   /*  Computation of: aux <- trans(X)*yminp + aux */
-  F77_CALL(dgemv)(trans, &n, &p, &one, X, &n, yminp, &nrv, &one, aux, &nrv);
+  F77_CALL(dgemv)(trans, &n, &p, &one, X, &n, yminp, &nrv, &one, aux, &nrv FCONE);
 
   /*  Elimination of zeroes in matrix A */
   if (ap < p) {
@@ -185,7 +191,7 @@ void ridgecoef(double *X, double *W, double *P, double *WX, double *XWX,
   F77_CALL(dcopy)(&p, aux, &nrv, theta, &nrv);
 
   /*  Compute the linear predictor and store it in yminp: yminp <- X*theta */
-  F77_CALL(dgemv)(notrans,&n,&p,&one, X, &n, theta, &nrv, &zero, yminp, &nrv);
+  F77_CALL(dgemv)(notrans,&n,&p,&one, X, &n, theta, &nrv, &zero, yminp, &nrv FCONE);
 
   /*  Update prob & W: prob <- 1/(1+exp(-X*theta)), W <- diag(prob*(1-prob)) */
   for (i=0; i < n; i++) {
@@ -210,10 +216,10 @@ void ridgecoef(double *X, double *W, double *P, double *WX, double *XWX,
   F77_CALL(daxpy)(&n, &one, y, &nrv, yminp, &nrv);
 
   /*  Computation of: aux <- XWX*theta */
-  F77_CALL(dgemv)(notrans,&p,&p,&one, XWX, &p, theta, &nrv, &zero, aux, &nrv);
+  F77_CALL(dgemv)(notrans,&p,&p,&one, XWX, &p, theta, &nrv, &zero, aux, &nrv FCONE);
 
   /*  Computation of: aux <- trans(X)*yminp + aux */
-  F77_CALL(dgemv)(trans, &n, &p, &one, X, &n, yminp, &nrv, &one, aux, &nrv);
+  F77_CALL(dgemv)(trans, &n, &p, &one, X, &n, yminp, &nrv, &one, aux, &nrv FCONE);
 
   /*  Elimination of zeroes in matrix A */
   if (ap < p) {
@@ -264,16 +270,15 @@ double ridgecrit(double *X, double *W, double *P, double *WX, double *XWX,
   static double  one  = 1.;
   static double  zero = 0.;
   static char *notrans = "N";/* for dgemv(): Matrix is not transposed */
-  int i;
 
   /*  Computing the logit ridge coefficients */
   ridgecoef(X,W,P,WX,XWX,A,y,prob,theta,aux,yminp,pivot,n,p,ap,info);
 
   /*  Compute the linear predictor and store it in yminp: yminp <- X*theta */
-  F77_CALL(dgemv)(notrans,&n,&ap,&one, X, &n, theta, &nrv, &zero, yminp,&nrv);
+  F77_CALL(dgemv)(notrans,&n,&ap,&one, X, &n, theta, &nrv, &zero, yminp,&nrv FCONE);
 
   /*  Update prob: prob <- 1/(1+exp(-X*theta)) */
-  for (i=0; i < n; i++)
+  for (int i=0; i < n; i++)
       prob[i] = 1/(1 + exp(-yminp[i]));
 
   /*  Compute the penalty: penalty <- trans(theta)*P*theta */

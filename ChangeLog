@@ -1,3 +1,8 @@
+2021-09-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-1
+	* src/pelora.c: add USE_FC_LEN_T and use FCONE e.g. in calls to Fortran dgemv()
+
 2020-10-15  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (Version): 1.1-0;
