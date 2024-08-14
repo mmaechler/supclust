@@ -1,3 +1,7 @@
+2024-08-14  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-2; use `Authors@R`; fix URLs in *.Rd
+
 2021-09-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (Version): 1.1-1
