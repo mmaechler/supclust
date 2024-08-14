@@ -1,13 +1,16 @@
 Package:	supclust
 Title:		Supervised Clustering of Predictor Variables Such as Genes
-Version:	1.1-1
-Date:		2021-09-25
+Version:	1.1-2
+Date:		2024-08-14
+VersionNote: Last CRAN 1.1-1 on 2021-09-25
 Description:	Methodology for supervised grouping aka "clustering" of
    potentially many predictor variables, such as genes etc, implementing
    algorithms 'PELORA' and 'WILMA'.
 Imports: graphics, stats, rpart, class
-Author: Marcel Dettling <marcel.dettling@zhaw.ch> and Martin Maechler
-Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
+Authors@R: c(
+  person("Marcel", "Dettling", role = "aut", email = "marcel.dettling@zhaw.ch"),
+  person("Martin", "Maechler", role = c("aut", "cre"), email = "maechler@stat.math.ethz.ch",
+         comment = c(ORCID = "0000-0002-8685-9910")))
 URL: https://github.com/mmaechler/supclust
 Encoding: UTF-8
 License: GPL-3
