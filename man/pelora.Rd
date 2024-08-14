@@ -86,8 +86,11 @@ pelora(x, y, u = NULL, noc = 10, lambda = 1/32, flip = "pm",
 }
 \references{
   Marcel Dettling (2003)
-  \emph{Finding Predictive Gene Groups from Microarray Data}, see
-  \url{https://stat.ethz.ch/~dettling/supervised.html}
+  %% \emph{Finding Predictive Gene Groups from Microarray Data}, see
+  %%  no longer \url{https://stat.ethz.ch/~dettling/supervised.html}
+  %% Presentation at Duke, Nov. 2003:
+  \emph{Extracting Predictive Gene Groups from Microarray Data and Combining them with Clinical Variables}
+  \url{https://stat.ethz.ch/Manuscripts/dettling/presentation3.pdf}
 
   Marcel Dettling and Peter Bühlmann (2002).
   Supervised Clustering of Genes.

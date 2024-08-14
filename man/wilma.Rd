@@ -58,23 +58,19 @@ wilma(x, y, noc, genes = NULL, flip = TRUE, once.per.clust = FALSE, trace = 0)
     \eqn{i}th variable (gene) should be sign-flipped (-1) or not (+1).}
 }
 \references{
-  Marcel Dettling (2002)
-  \emph{Supervised Clustering of Genes}, see
-  \url{https://stat.ethz.ch/~dettling/supercluster.html}
+  %% -- no longer available
+  %% Marcel Dettling (2002)
+  %% \emph{Supervised Clustering of Genes}
+  %% \url{https://stat.ethz.ch/~dettling/supercluster.html}
 
   Marcel Dettling and Peter Bühlmann (2002).
   Supervised Clustering of Genes.
   \emph{Genome Biology}, \bold{3}(12): research0069.1-0069.15,
   \doi{10.1186/gb-2002-3-12-research0069} .
-
-  Marcel Dettling and Peter Bühlmann (2004).
-  Finding Predictive Gene Groups from Microarray Data.
-  \emph{Journal of Multivariate Analysis} \bold{90}, 106--131,
-  \doi{10.1016/j.jmva.2004.02.012} .
 }
 \author{Marcel Dettling, \email{dettling@stat.math.ethz.ch}}
-\seealso{\code{\link{score}}, \code{\link{margin}}, and for a newer
-  methodology, \code{\link{pelora}}.}
+\seealso{\code{\link{score}}, \code{\link{margin}},
+  and for a newer methodology, \code{\link{pelora}}.}
 \examples{
 ## Working with a "real" microarray dataset
 data(leukemia, package="supclust")
